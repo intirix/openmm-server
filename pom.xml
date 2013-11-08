@@ -78,6 +78,12 @@
 			<version>1.2.17</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.omertron</groupId>
@@ -114,13 +120,13 @@
 			<scope>test</scope>
 		</dependency>
 
-<dependency>
-	<groupId>xmlunit</groupId>
-	<artifactId>xmlunit</artifactId>
-	<version>1.4</version>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+			<version>1.4</version>
 			<scope>test</scope>
-</dependency>
-            
+		</dependency>
+
 	</dependencies>
 
 
@@ -140,27 +146,12 @@
 				</configuration>
 			</plugin>
 
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${staging.dir}</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<executions> <execution> <id>copy-dependencies</id> <phase>package</phase> 
+				<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${staging.dir}</outputDirectory> 
+				<overWriteReleases>false</overWriteReleases> <overWriteSnapshots>false</overWriteSnapshots> 
+				<overWriteIfNewer>true</overWriteIfNewer> </configuration> </execution> </executions> 
+				</plugin> -->
 
 			<!-- copy other checked resource into staging area, expected by install.xml -->
 			<plugin>
@@ -182,7 +173,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 
 		</plugins>
 		<pluginManagement>

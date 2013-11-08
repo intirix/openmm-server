@@ -12,6 +12,7 @@ import org.apache.log4j.RollingFileAppender;
 
 import Acme.Serve.Serve;
 
+import com.intirix.openmm.server.ui.RootRedirectServlet;
 import com.intirix.openmm.server.ui.SingleStaticFileServlet;
 import com.intirix.openmm.server.ui.StaticResourceServlet;
 import com.intirix.openmm.server.ui.html.HtmlTemplateEngineServlet;
@@ -84,28 +85,33 @@ public class OpenMMServer
 	private void initServlets()
 	{
 		final HtmlTemplateEngineServlet htmlServlet = new HtmlTemplateEngineServlet( runtime );
-		server.addServlet( "/html/*", htmlServlet );
 		server.addServlet( "/html", htmlServlet );
+		server.addServlet( "/html/*", htmlServlet );
 
 		final Servlet webjarsServlet = new StaticResourceServlet( "/META-INF/resources/webjars" );
-		server.addServlet( "/staticlib/*", webjarsServlet );
 		server.addServlet( "/staticlib", webjarsServlet );
+		server.addServlet( "/staticlib/*", webjarsServlet );
 
 		final Servlet staticServlet = new StaticResourceServlet( "/web" );
-		server.addServlet( "/static/*", staticServlet );
 		server.addServlet( "/static", staticServlet );
+		server.addServlet( "/static/*", staticServlet );
 		
 		final FileServlet fileServlet = new VFSFileServlet();
 		fileServlet.setRuntime( runtime );
-		server.addServlet( "/download/*", fileServlet );
 		server.addServlet( "/download", fileServlet );
+		server.addServlet( "/download/*", fileServlet );
 
 		final FileServlet webCacheServlet = new WebCacheFileServlet();
 		webCacheServlet.setRuntime( runtime );
-		server.addServlet( "/cache/*", webCacheServlet );
 		server.addServlet( "/cache", webCacheServlet );
+		server.addServlet( "/cache/*", webCacheServlet );
+
 
 		server.addServlet( "/favicon.ico", new SingleStaticFileServlet( "/ic_launcher-web.ico" ) );
+
+		// redirect the root to the website
+		server.addServlet( "/index.html", new RootRedirectServlet() );
+		server.addServlet( "/", new RootRedirectServlet() );
 	}
 	
 	private void initPaths()
