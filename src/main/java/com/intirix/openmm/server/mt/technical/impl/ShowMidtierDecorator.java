@@ -48,6 +48,11 @@ public class ShowMidtierDecorator implements ShowMidtier
 		return child.listSeasons( showId );
 	}
 
+	public Season getSeason( int seasonId ) throws OpenMMMidtierException
+	{
+		return child.getSeason( seasonId );
+	}
+
 	public void updateSeason( Season oldBean, Season newBean ) throws OpenMMMidtierException
 	{
 		child.updateSeason( oldBean, newBean );
@@ -61,6 +66,11 @@ public class ShowMidtierDecorator implements ShowMidtier
 	public List< Episode > listEpisodes( int seasonId ) throws OpenMMMidtierException
 	{
 		return child.listEpisodes( seasonId );
+	}	
+
+	public Episode getEpisode( int epid ) throws OpenMMMidtierException
+	{
+		return child.getEpisode( epid );
 	}
 
 	public void updateEpisode( Episode oldBean, Episode newBean ) throws OpenMMMidtierException

@@ -19,6 +19,11 @@ import com.intirix.openmm.server.vfs.FileServlet;
 import com.intirix.openmm.server.vfs.VFSFileServlet;
 import com.intirix.openmm.server.vfs.WebCacheFileServlet;
 
+/**
+ * The driver program that actually starts the server
+ * @author jeff
+ *
+ */
 public class OpenMMServer
 {
 	private final Logger log = Logger.getLogger( OpenMMServer.class );

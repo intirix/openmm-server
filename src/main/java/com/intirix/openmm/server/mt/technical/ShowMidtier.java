@@ -63,6 +63,14 @@ public interface ShowMidtier
 	public List< Season > listSeasons( int showId ) throws OpenMMMidtierException;
 	
 	/**
+	 * Get a season by id
+	 * @param seasonId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public Season getSeason( int seasonId ) throws OpenMMMidtierException;
+	
+	/**
 	 * Update a season
 	 * @param oldBean
 	 * @param newBean
@@ -85,6 +93,14 @@ public interface ShowMidtier
 	 * @throws OpenMMMidtierException
 	 */
 	public List< Episode > listEpisodes( int seasonId ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get an episode by id
+	 * @param epid
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public Episode getEpisode( int epid ) throws OpenMMMidtierException;
 	
 	/**
 	 * Update an episode

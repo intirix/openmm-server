@@ -113,6 +113,11 @@ public class ShowAppImpl implements ShowApp
 		}
 		return null;
 	}
+	
+	public Season getSeason( int seasonId ) throws OpenMMMidtierException
+	{
+		return showMidtier.getSeason( seasonId );
+	}
 
 	public void updateSeason( Season oldBean, Season newBean ) throws OpenMMMidtierException
 	{
@@ -156,6 +161,21 @@ public class ShowAppImpl implements ShowApp
 			}
 		}
 		return null;
+	}
+	
+	public Episode getEpisode( int epid ) throws OpenMMMidtierException
+	{
+		Episode bean;
+		try
+		{
+			bean = (Episode)showMidtier.getEpisode( epid ).clone();
+		}
+		catch ( CloneNotSupportedException e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+		bean.setScreenshotPath( webCacheApp.getWebCacheUrl( bean.getScreenshotPath() ) );
+		return bean;
 	}
 
 	public void updateEpisode( Episode oldBean, Episode newBean ) throws OpenMMMidtierException

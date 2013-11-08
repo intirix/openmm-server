@@ -79,6 +79,9 @@ public class TestShowMidtierSQL
 		final Season season1c = midtier.listSeasons( showId ).get( 0 );
 		Assert.assertEquals( season1b.getName(), season1c.getName() );
 		
+		final Season season1d = midtier.getSeason( seasonId1 );
+		Assert.assertEquals( season1b.getName(), season1d.getName() );
+		
 		serializer.write( season1a, System.out );
 
 	}
@@ -120,6 +123,9 @@ public class TestShowMidtierSQL
 		
 		final Episode episode1d = midtier.listEpisodes( seasonId1 ).get( 0 );
 		Assert.assertEquals( episode1c.getDescription(), episode1d.getDescription() );
+		
+		final Episode episode1e = midtier.getEpisode( episodeId );
+		Assert.assertEquals( episode1c.getDescription(), episode1e.getDescription() );
 
 		
 		serializer.write( episode1a, System.out );

@@ -131,7 +131,7 @@ public class TestShowAppImpl
 	 * @throws OpenMMMidtierException
 	 */
 	@Test
-	public void testGetSeason() throws OpenMMMidtierException
+	public void testGetSeason1() throws OpenMMMidtierException
 	{
 		final Season season1 = new Season();
 		season1.setNumber( 1 );
@@ -146,6 +146,21 @@ public class TestShowAppImpl
 		EasyMock.replay( impl.getShowMidtier() );
 		
 		Assert.assertEquals( season2, impl.getSeason( 5, 2 ) );
+	}
+	
+	/**
+	 * Test the passthrough variant of getSeason()
+	 * @throws OpenMMMidtierException
+	 */
+	@Test
+	public void testGetSeason2() throws OpenMMMidtierException
+	{
+		final Season season = new Season();
+		
+		EasyMock.expect( impl.getShowMidtier().getSeason( season.getId() ) ).andReturn( season );
+		EasyMock.replay( impl.getShowMidtier() );
+		
+		Assert.assertEquals( season.getId(), impl.getSeason( season.getId() ).getId() );
 	}
 	
 	@Test
@@ -199,7 +214,7 @@ public class TestShowAppImpl
 	 * @throws OpenMMMidtierException
 	 */
 	@Test
-	public void testGetEpisode() throws OpenMMMidtierException
+	public void testGetEpisode1() throws OpenMMMidtierException
 	{
 		final int showId = 2;
 		final Season season1 = new Season();
@@ -220,6 +235,21 @@ public class TestShowAppImpl
 		EasyMock.replay( impl.getShowMidtier(), impl.getWebCacheApp() );
 		
 		Assert.assertEquals( episode1.getEpNum(), impl.getEpisode( showId, season1.getNumber(), episode1.getEpNum() ).getEpNum() );
+	}
+	
+	/**
+	 * Test the passthrough variant of getEpisode()
+	 * @throws OpenMMMidtierException
+	 */
+	@Test
+	public void testGetEpisode2() throws OpenMMMidtierException
+	{
+		final Episode episode1 = new Episode();
+		
+		EasyMock.expect( impl.getShowMidtier().getEpisode( episode1.getId() ) ).andReturn( episode1 );
+		EasyMock.replay( impl.getShowMidtier() );
+		
+		Assert.assertEquals( episode1.getId(), impl.getEpisode( episode1.getId() ).getId() );
 	}
 	
 	@Test

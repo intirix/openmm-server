@@ -111,6 +111,18 @@ public class ShowMidtierSQL implements ShowMidtier
 			throw new OpenMMMidtierException( e );
 		}
 	}
+	
+	public Season getSeason( int seasonId ) throws OpenMMMidtierException
+	{
+		try
+		{
+			return sqlHelper.executeQuerySingleRow( new SeasonObjectFactory(), "show_season_get_by_id.sql", seasonId );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+	}
 
 	public void updateSeason( Season oldBean, Season newBean ) throws OpenMMMidtierException
 	{
@@ -152,6 +164,21 @@ public class ShowMidtierSQL implements ShowMidtier
 			throw new OpenMMMidtierException( e );
 		}
 	}
+	
+	
+
+	public Episode getEpisode( int epid ) throws OpenMMMidtierException
+	{
+		try
+		{
+			return sqlHelper.executeQuerySingleRow( new EpisodeObjectFactory(), "show_get_episode_by_id.sql", epid );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+	}
+
 
 	public void updateEpisode( Episode oldBean, Episode newBean ) throws OpenMMMidtierException
 	{

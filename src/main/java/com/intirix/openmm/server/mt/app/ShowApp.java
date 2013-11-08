@@ -82,6 +82,14 @@ public interface ShowApp
 	 * @throws OpenMMMidtierException
 	 */
 	public Season getSeason( int showId, int seasonNumber ) throws OpenMMMidtierException;
+
+	/**
+	 * Get a season by id
+	 * @param seasonId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public Season getSeason( int seasonId ) throws OpenMMMidtierException;
 	
 	/**
 	 * Update a season
@@ -116,6 +124,14 @@ public interface ShowApp
 	 * @throws OpenMMMidtierException
 	 */
 	public Episode getEpisode( int showId, int seasonNumber, int epNum ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get a particular episode by the id
+	 * @param epid
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public Episode getEpisode( int epid ) throws OpenMMMidtierException;
 	
 	/**
 	 * Update an episode
