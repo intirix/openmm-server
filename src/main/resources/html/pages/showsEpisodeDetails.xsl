@@ -50,6 +50,16 @@
 							<xsl:apply-templates select="//description/node()" />
 						</p>
 						</div>
+						
+						<center>
+						<div data-role="controlgroup" data-type="horizontal">
+							<a href="#" data-role="button">Update Episode</a>
+							<a data-role="button">
+								<xsl:attribute name="href">assignShowFiles.html?show=<xsl:apply-templates select="//showId/node()" />&amp;season=<xsl:apply-templates select="//seasonNumber/node()" />&amp;ep=<xsl:apply-templates select="//epNum/node()" />&amp;path=/</xsl:attribute>
+								Assign Files
+							</a>
+						</div>
+						</center>
 					</div>
 
 				</Content>

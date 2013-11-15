@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.intirix.openmm.server.OpenMMServerRuntime;
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
@@ -31,7 +32,9 @@ public class ShowsEpisodeDetailsBeanFactory implements PageBeanFactory
 			final int id = Integer.parseInt( request.getParameter( "epid" ) );
 			final ShowApp showApp = runtime.getApplicationLayer().getShowApp();
 			final Episode episode = showApp.getEpisode( id );
-			page.setSeasonNumber( showApp.getSeason( episode.getSeasonId() ).getNumber() );
+			final Season season = showApp.getSeason( episode.getSeasonId() );
+			page.setSeasonNumber( season.getNumber() );
+			page.setShowId( season.getShowId() );
 
 			page.setEpisode( episode );
 

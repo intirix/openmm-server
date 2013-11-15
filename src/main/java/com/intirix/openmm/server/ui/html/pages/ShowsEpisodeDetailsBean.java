@@ -14,11 +14,23 @@ public class ShowsEpisodeDetailsBean extends PageData
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int showId;
+	
 	private int seasonNumber;
 	
 	private Episode episode;
 	
 	
+
+	public int getShowId()
+	{
+		return showId;
+	}
+
+	public void setShowId( int showId )
+	{
+		this.showId = showId;
+	}
 
 	public int getSeasonNumber()
 	{

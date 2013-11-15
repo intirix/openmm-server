@@ -31,6 +31,12 @@ public class OpenMMMidtierException extends Exception
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString()
+	{
+		return getClass().getSimpleName() + ": " + getMessage();
+	}
+
 
 
 }
