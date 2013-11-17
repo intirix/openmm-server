@@ -2,7 +2,7 @@ package com.intirix.openmm.server.ui.html.pages;
 
 import org.simpleframework.xml.Default;
 
-import com.intirix.openmm.server.api.beans.Season;
+import com.intirix.openmm.server.api.beans.SeasonDetails;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.ui.html.PageData;
 
@@ -17,7 +17,7 @@ public class ShowsDetailsBean extends PageData
 	
 	private Show show;
 
-	private Season[] seasons;
+	private SeasonDetails[] seasons;
 	
 
 	public Show getShow()
@@ -30,12 +30,12 @@ public class ShowsDetailsBean extends PageData
 		this.show = show;
 	}
 
-	public Season[] getSeasons()
+	public SeasonDetails[] getSeasons()
 	{
 		return seasons;
 	}
 
-	public void setSeasons( Season[] seasons )
+	public void setSeasons( SeasonDetails[] seasons )
 	{
 		this.seasons = seasons;
 	}

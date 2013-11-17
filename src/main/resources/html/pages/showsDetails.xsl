@@ -19,10 +19,11 @@
 					
 					<h2>Seasons</h2>
 					<ListView>
-						<xsl:for-each select="//season">
+						<xsl:for-each select="//seasonDetails">
 							<ListViewItem>
-								<xsl:attribute name="href">showsSeasonDetails.html?sid=<xsl:apply-templates select="/showsDetailsBean/show/id"/>&amp;season=<xsl:apply-templates select="number/node()"/></xsl:attribute>
-								<xsl:apply-templates select="name/node()"/>
+								<xsl:attribute name="href">showsSeasonDetails.html?sid=<xsl:apply-templates select="/showsDetailsBean/show/id"/>&amp;season=<xsl:apply-templates select="season/number/node()"/></xsl:attribute>
+								<xsl:apply-templates select="season/name/node()"/>
+								<span class="ui-li-count"><xsl:apply-templates select="numEpisodesAvailable/node()"/>/<xsl:apply-templates select="numEpisodes/node()"/></span>
 							</ListViewItem>
 						</xsl:for-each>
 					</ListView>

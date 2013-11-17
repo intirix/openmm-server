@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.EpisodeDetails;
 import com.intirix.openmm.server.api.beans.Season;
+import com.intirix.openmm.server.api.beans.SeasonDetails;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 
 /**
  * This class is basically a wrapper around the technical layer.  This class has to be in the
@@ -102,6 +106,36 @@ public class ShowAppImpl implements ShowApp
 		return showMidtier.listSeasons( showId );
 	}
 	
+	public List< SeasonDetails > listSeasonDetails( int showId ) throws OpenMMMidtierException
+	{
+		final List< Season > seasons = listSeasons( showId );
+		final List< SeasonEpisodeCounts > counts = showMidtier.listSeasonEpisodeCounts( showId );
+		final List< SeasonDetails > details = new ArrayList< SeasonDetails >( seasons.size() );
+		
+		for ( final Season season: seasons )
+		{
+			final SeasonDetails detail = new SeasonDetails();
+			
+			detail.setSeason( season );
+			
+			// search for the counts object that matches the season
+			// this is n-squared, but the cardinality is pretty low
+			// so, o well
+			for ( final SeasonEpisodeCounts sec: counts )
+			{
+				if ( sec.getSeasonId() == season.getId() )
+				{
+					detail.setNumEpisodes( sec.getNumEpisodes() );
+					detail.setNumEpisodesAvailable( sec.getNumEpisodesAvailable() );
+				}
+			}
+			
+			details.add( detail );
+		}
+		
+		return details;
+	}
+
 	public Season getSeason( int showId, int seasonNumber ) throws OpenMMMidtierException
 	{
 		for ( final Season season: listSeasons( showId ) )
@@ -149,6 +183,34 @@ public class ShowAppImpl implements ShowApp
 		return ret;
 	}
 	
+	
+	
+	public List< EpisodeDetails > listEpisodeDetails( int seasonId ) throws OpenMMMidtierException
+	{
+		final List< Episode > episodes = showMidtier.listEpisodes( seasonId );
+		final List< EpisodeLinkCounts > counts = showMidtier.listEpisodeLinkCounts( seasonId );
+		final List< EpisodeDetails> details = new ArrayList< EpisodeDetails >( episodes.size() );
+		
+		for ( final Episode episode: episodes )
+		{
+			final EpisodeDetails detail = new EpisodeDetails();
+			detail.setEpisode( episode );
+			
+			for ( final EpisodeLinkCounts elc: counts )
+			{
+				if ( elc.getEpisodeId() == episode.getId() )
+				{
+					detail.setNumExternalLinks( elc.getNumExternalLinks() );
+					detail.setNumInternalLinks( elc.getNumInternalLinks() );
+				}
+			}
+			
+			details.add( detail );
+		}
+		
+		return details;
+	}
+
 	public Episode getEpisode( int showId, int seasonNumber, int epNum ) throws OpenMMMidtierException
 	{
 		final Season season = getSeason( showId, seasonNumber );

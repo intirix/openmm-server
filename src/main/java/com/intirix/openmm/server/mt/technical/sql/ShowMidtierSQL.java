@@ -13,8 +13,12 @@ import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCountsObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.EpisodeObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.IntegerObjectFactory;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCountsObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.SeasonObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.ShowObjectFactory;
 
@@ -112,6 +116,20 @@ public class ShowMidtierSQL implements ShowMidtier
 		}
 	}
 	
+	
+	public List< SeasonEpisodeCounts > listSeasonEpisodeCounts( int showId ) throws OpenMMMidtierException
+	{
+		try
+		{
+			return sqlHelper.executeQuery( new SeasonEpisodeCountsObjectFactory(), "show_season_list_available.sql", showId );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+	}
+
+
 	public Season getSeason( int seasonId ) throws OpenMMMidtierException
 	{
 		try
@@ -165,7 +183,19 @@ public class ShowMidtierSQL implements ShowMidtier
 		}
 	}
 	
-	
+
+	public List< EpisodeLinkCounts > listEpisodeLinkCounts( int seasonId ) throws OpenMMMidtierException
+	{
+		try
+		{
+			return sqlHelper.executeQuery( new EpisodeLinkCountsObjectFactory(), "show_episodes_list_available.sql", seasonId );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+	}
+
 
 	public Episode getEpisode( int epid ) throws OpenMMMidtierException
 	{

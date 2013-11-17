@@ -12,6 +12,8 @@ import org.apache.log4j.RollingFileAppender;
 
 import Acme.Serve.Serve;
 
+import com.intirix.openmm.server.api.QueryServlet;
+import com.intirix.openmm.server.api.UpdateServlet;
 import com.intirix.openmm.server.ui.RootRedirectServlet;
 import com.intirix.openmm.server.ui.SingleStaticFileServlet;
 import com.intirix.openmm.server.ui.StaticResourceServlet;
@@ -100,6 +102,15 @@ public class OpenMMServer
 		fileServlet.setRuntime( runtime );
 		server.addServlet( "/download", fileServlet );
 		server.addServlet( "/download/*", fileServlet );
+		
+		final UpdateServlet updateServlet = new UpdateServlet();
+		updateServlet.setEngine( runtime.getActionEngine() );
+		server.addServlet( "/api/update", updateServlet );
+		
+		final QueryServlet queryServlet = new QueryServlet();
+		queryServlet.setRuntime( runtime );
+		server.addServlet( "/api/get", queryServlet );
+		server.addServlet( "/api/get/*", queryServlet );
 
 		final FileServlet webCacheServlet = new WebCacheFileServlet();
 		webCacheServlet.setRuntime( runtime );

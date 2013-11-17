@@ -3,7 +3,9 @@ package com.intirix.openmm.server.mt.app;
 import java.util.List;
 
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.EpisodeDetails;
 import com.intirix.openmm.server.api.beans.Season;
+import com.intirix.openmm.server.api.beans.SeasonDetails;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
@@ -75,6 +77,14 @@ public interface ShowApp
 	public List< Season > listSeasons( int showId ) throws OpenMMMidtierException;
 	
 	/**
+	 * List details about the seasons of a show
+	 * @param showId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< SeasonDetails > listSeasonDetails( int showId ) throws OpenMMMidtierException;
+	
+	/**
 	 * Get a particular season
 	 * @param showId
 	 * @param seasonNumber
@@ -114,6 +124,14 @@ public interface ShowApp
 	 * @throws OpenMMMidtierException
 	 */
 	public List< Episode > listEpisodes( int seasonId ) throws OpenMMMidtierException;
+	
+	/**
+	 * List details about the episodes of a season
+	 * @param seasonId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< EpisodeDetails > listEpisodeDetails( int seasonId ) throws OpenMMMidtierException;
 	
 	/**
 	 * Get a particular episode

@@ -4,7 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.intirix.openmm.server.OpenMMServerRuntime;
-import com.intirix.openmm.server.api.beans.Season;
+import com.intirix.openmm.server.api.beans.SeasonDetails;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
@@ -29,7 +29,7 @@ public class ShowsDetailsBeanFactory implements PageBeanFactory
 			final ShowApp showApp = runtime.getApplicationLayer().getShowApp();
 			final Show show = showApp.getShow( showId );
 			page.setShow( show );
-			page.setSeasons( showApp.listSeasons( showId ).toArray( new Season[]{} ) );
+			page.setSeasons( showApp.listSeasonDetails( showId ).toArray( new SeasonDetails[]{} ) );
 		}
 		catch ( Exception e )
 		{

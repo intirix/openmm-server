@@ -7,6 +7,8 @@ import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 
 public class ShowMidtierDecorator implements ShowMidtier
 {
@@ -47,6 +49,12 @@ public class ShowMidtierDecorator implements ShowMidtier
 	{
 		return child.listSeasons( showId );
 	}
+	
+
+	public List< SeasonEpisodeCounts > listSeasonEpisodeCounts( int showId ) throws OpenMMMidtierException
+	{
+		return child.listSeasonEpisodeCounts( showId );
+	}
 
 	public Season getSeason( int seasonId ) throws OpenMMMidtierException
 	{
@@ -66,7 +74,13 @@ public class ShowMidtierDecorator implements ShowMidtier
 	public List< Episode > listEpisodes( int seasonId ) throws OpenMMMidtierException
 	{
 		return child.listEpisodes( seasonId );
-	}	
+	}
+	
+
+	public List< EpisodeLinkCounts > listEpisodeLinkCounts( int seasonId ) throws OpenMMMidtierException
+	{
+		return child.listEpisodeLinkCounts( seasonId );
+	}
 
 	public Episode getEpisode( int epid ) throws OpenMMMidtierException
 	{

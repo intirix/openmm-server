@@ -14,6 +14,8 @@ import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 
 public class TestShowMidtierSQL
 {
@@ -156,6 +158,83 @@ public class TestShowMidtierSQL
 
 
 		midtier.assignFile( episodeId, "/test/blah.avi", 1024 );
+
+	}
+	
+	@Test
+	public void testSeasonEpisodeCounts() throws Exception
+	{
+		final Show show1 = new Show();
+		show1.setName( "Simpsons" );
+		int showId = midtier.addShow( show1 );
+		
+		final Season season1 = new Season();
+		season1.setNumber( 1 );
+		season1.setName( "Season 1" );
+		season1.setShowId( showId );
+		
+		final Season season2 = new Season();
+		season2.setNumber( 2 );
+		season2.setName( "Season 2" );
+		season2.setShowId( showId );
+		
+		
+		final int seasonId1 = midtier.addSeason( season1 );
+		final int seasonId2 = midtier.addSeason( season2 );
+		
+		
+		final Episode episode1 = new Episode();
+		episode1.setSeasonId( seasonId1 );
+		episode1.setName( "Simpsons Roasting on an Open Fire" );
+		episode1.setEpNum( 1 );
+		final int episodeId = midtier.addEpisode( episode1 );
+		
+		final Episode episode2 = new Episode();
+		episode2.setSeasonId( seasonId2 );
+		episode2.setName( "Simpsons Roasting on an Open Fire" );
+		episode2.setEpNum( 1 );
+		midtier.addEpisode( episode2 );
+
+
+		midtier.assignFile( episodeId, "/test/blah.avi", 1024 );
+		
+		final List< SeasonEpisodeCounts > counts = midtier.listSeasonEpisodeCounts( showId );
+		Assert.assertEquals( 2, counts.size() );
+		for ( final SeasonEpisodeCounts sec: counts )
+		{
+			if ( sec.getSeasonId() == seasonId1 )
+			{
+				Assert.assertEquals( 1, sec.getNumEpisodesAvailable() );
+				Assert.assertEquals( 1, sec.getNumEpisodes() );
+			}
+			else if ( sec.getSeasonId() == seasonId2 )
+			{
+				Assert.assertEquals( 0, sec.getNumEpisodesAvailable() );
+				Assert.assertEquals( 1, sec.getNumEpisodes() );
+			}
+			else
+			{
+				// we found a season that we didn't put in
+				Assert.fail();
+			}
+		}
+		
+		
+		
+		final List< EpisodeLinkCounts > elcounts = midtier.listEpisodeLinkCounts( seasonId1 );
+		Assert.assertEquals( 1, elcounts.size() );
+		for ( final EpisodeLinkCounts elc: elcounts )
+		{
+			if ( elc.getEpisodeId() == episodeId )
+			{
+				Assert.assertEquals( 1, elc.getNumInternalLinks() );
+				Assert.assertEquals( 0, elc.getNumExternalLinks() );
+			}
+			else
+			{
+				Assert.fail( "Unknown episode count" );
+			}
+		}
 
 	}
 }

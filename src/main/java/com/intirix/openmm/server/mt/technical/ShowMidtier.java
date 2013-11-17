@@ -6,6 +6,8 @@ import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 
 /**
  * Low level interface for dealing with shows
@@ -63,6 +65,14 @@ public interface ShowMidtier
 	public List< Season > listSeasons( int showId ) throws OpenMMMidtierException;
 	
 	/**
+	 * Determine how many episodes are available for the seasons of a show
+	 * @param showId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< SeasonEpisodeCounts > listSeasonEpisodeCounts( int showId ) throws OpenMMMidtierException;
+	
+	/**
 	 * Get a season by id
 	 * @param seasonId
 	 * @return
@@ -93,6 +103,14 @@ public interface ShowMidtier
 	 * @throws OpenMMMidtierException
 	 */
 	public List< Episode > listEpisodes( int seasonId ) throws OpenMMMidtierException;
+	
+	/**
+	 * List the link counts for the episodes of a season
+	 * @param seasonId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< EpisodeLinkCounts > listEpisodeLinkCounts( int seasonId ) throws OpenMMMidtierException;
 	
 	/**
 	 * Get an episode by id
