@@ -14,6 +14,8 @@ import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
+import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 
 public class TestShowAppImpl
 {
@@ -284,6 +286,45 @@ public class TestShowAppImpl
 		EasyMock.replay( impl.getShowMidtier() );
 		
 		impl.assignFile( 1, "file", 2 );
+	}
+	
+	@Test
+	public void testListSeasonDetails() throws OpenMMMidtierException
+	{
+		final int SHOW_ID = 1;
+		final Season season1 = new Season();
+		final List< Season > seasons = new ArrayList< Season >();
+		seasons.add( season1 );
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		
+		final SeasonEpisodeCounts count1 = new SeasonEpisodeCounts();
+		final List< SeasonEpisodeCounts > counts = new ArrayList< SeasonEpisodeCounts >();
+		counts.add( count1 );
+		EasyMock.expect( impl.getShowMidtier().listSeasonEpisodeCounts( SHOW_ID ) ).andReturn( counts );
+		
+		EasyMock.replay( impl.getShowMidtier() );
+		impl.listSeasonDetails( SHOW_ID );
+	}
+	
+	@Test
+	public void testListEpisodeDetails() throws OpenMMMidtierException
+	{
+		final int SEASON_ID = 2;
+		
+		final Episode ep1 = new Episode();
+		final List< Episode > eps = new ArrayList< Episode >();
+		eps.add( ep1 );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( SEASON_ID ) ).andReturn( eps );
+		
+		final EpisodeLinkCounts elc = new EpisodeLinkCounts();
+		final List< EpisodeLinkCounts > counts = new ArrayList< EpisodeLinkCounts >();
+		counts.add( elc );
+		EasyMock.expect( impl.getShowMidtier().listEpisodeLinkCounts( SEASON_ID ) ).andReturn( counts );
+		
+		EasyMock.replay( impl.getShowMidtier() );
+		
+		
+		impl.listEpisodeDetails( SEASON_ID );
 	}
 	
 }

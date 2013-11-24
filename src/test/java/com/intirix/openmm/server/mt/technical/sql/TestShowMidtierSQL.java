@@ -11,6 +11,7 @@ import org.simpleframework.xml.core.Persister;
 import com.intirix.openmm.server.MockSystemFactory;
 import com.intirix.openmm.server.OpenMMServerRuntime;
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
@@ -235,6 +236,16 @@ public class TestShowMidtierSQL
 				Assert.fail( "Unknown episode count" );
 			}
 		}
+		
+		
+		final List< MediaLink > links = midtier.getEpisodeLinks( episodeId );
+		Assert.assertEquals( 1, links.size() );
+		final MediaLink link = links.get( 0 );
+		Assert.assertEquals( "vfs:///test/blah.avi", link.getUrl() );
+		
+		midtier.unassignFile( link.getId() );
+		
+		Assert.assertEquals( 0, midtier.getEpisodeLinks( episodeId ).size() );
 
 	}
 }

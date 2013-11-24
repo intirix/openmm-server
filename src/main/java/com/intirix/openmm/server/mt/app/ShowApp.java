@@ -152,6 +152,24 @@ public interface ShowApp
 	public Episode getEpisode( int epid ) throws OpenMMMidtierException;
 	
 	/**
+	 * Get details about the episode
+	 * @param showId
+	 * @param seasonNumber
+	 * @param epNum
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public EpisodeDetails getEpisodeDetails( int showId, int seasonNumber, int epNum ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get details about the episode
+	 * @param epid
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public EpisodeDetails getEpisodeDetails( int epid ) throws OpenMMMidtierException;
+	
+	/**
 	 * Update an episode
 	 * @param oldBean
 	 * @param newBean

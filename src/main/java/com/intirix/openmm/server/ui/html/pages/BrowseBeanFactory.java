@@ -1,11 +1,15 @@
 package com.intirix.openmm.server.ui.html.pages;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.intirix.openmm.server.OpenMMServerRuntime;
+import com.intirix.openmm.server.api.beans.FileEntry;
+import com.intirix.openmm.server.api.beans.FolderEntry;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
 import com.intirix.openmm.server.ui.html.PageData;
 
@@ -34,8 +38,23 @@ public class BrowseBeanFactory implements PageBeanFactory
 		
 		try
 		{
-			page.setFolders( runtime.getVFSBrowser().listFolders( page.getPath() ) );
-			page.setFiles( runtime.getVFSBrowser().listFiles( page.getPath() ) );
+			final List< FolderEntry > folders = new ArrayList< FolderEntry >();
+			for ( final String folder: runtime.getVFSBrowser().listFolders( page.getPath() ) )
+			{
+				final FolderEntry entry = new FolderEntry();
+				entry.setName( folder );
+				folders.add( entry );
+			}
+			page.setFolders( folders.toArray( new FolderEntry[]{} ) );
+			
+			final List< FileEntry > files = new ArrayList< FileEntry >();
+			for ( final String file: runtime.getVFSBrowser().listFiles( page.getPath() ) )
+			{
+				final FileEntry entry = new FileEntry();
+				entry.setName( file );
+				files.add( entry );
+			}
+			page.setFiles( files.toArray( new FileEntry[]{} ) );
 		}
 		catch ( Exception e )
 		{

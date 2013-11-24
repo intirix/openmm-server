@@ -47,6 +47,16 @@ public class QueryServlet extends HttpServlet
 	{
 		final String uri = req.getRequestURI();
 		final String query = uri.replaceFirst( ".*/api/get/", "" );
+		
+		if ( req != null )
+		{
+			req.setAttribute( "query", query );
+		}
+		
+		final long t1 = System.currentTimeMillis();
+		try
+		{
+		
 		final String parts[] = query.split( "/" );
 		if ( parts.length >= 2 )
 		{
@@ -96,6 +106,13 @@ public class QueryServlet extends HttpServlet
 		else
 		{
 			log.debug( "Query too small: " + uri );
+		}
+		}
+		finally
+		{
+			final long t2 = System.currentTimeMillis();
+			final long dt = t2 - t1;
+			log.debug( "Query [" + query + "] took " + dt + " ms" );
 		}
 
 	}

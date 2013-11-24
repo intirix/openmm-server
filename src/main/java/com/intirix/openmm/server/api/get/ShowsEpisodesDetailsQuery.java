@@ -4,7 +4,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.intirix.openmm.server.api.GetQuery;
+import com.intirix.openmm.server.api.ShowEpisodeDetailsResponse;
+import com.intirix.openmm.server.api.beans.EpisodeDetails;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
+import com.intirix.openmm.server.mt.app.ShowApp;
 
 public class ShowsEpisodesDetailsQuery extends GetQuery
 {
@@ -15,7 +18,15 @@ public class ShowsEpisodesDetailsQuery extends GetQuery
 		final int epid = Integer.parseInt( param );
 		try
 		{
-			return getRuntime().getApplicationLayer().getShowApp().getEpisodeDetails( epid );
+			final ShowApp showApp = getRuntime().getApplicationLayer().getShowApp();
+			final EpisodeDetails details = showApp.getEpisodeDetails( epid );
+			final ShowEpisodeDetailsResponse response = new ShowEpisodeDetailsResponse();
+			
+			response.setEpisode( details );
+			response.setSeason( showApp.getSeason( details.getEpisode().getSeasonId() ) );
+			response.setShow( showApp.getShow( response.getSeason().getShowId() ) );
+			
+			return response;
 		}
 		catch ( OpenMMMidtierException e )
 		{

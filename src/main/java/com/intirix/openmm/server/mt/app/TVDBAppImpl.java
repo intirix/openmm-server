@@ -132,6 +132,7 @@ public class TVDBAppImpl implements TVDBApp
 							final Episode newBean = (Episode)oldBean.clone();
 
 							newBean.setDescription( episodeBean.getOverview() );
+							newBean.setGuests( getGuestList( episodeBean ) );
 							newBean.setRating( episodeBean.getRating() );
 							newBean.setScreenshotPath( episodeBean.getFilename() );
 
@@ -196,12 +197,12 @@ public class TVDBAppImpl implements TVDBApp
 	 * @param episodeBean
 	 * @throws OpenMMMidtierException
 	 */
-	private void addEpisode( final int seasonId, final int seasonNumber,
-			final com.omertron.thetvdbapi.model.Episode episodeBean ) throws OpenMMMidtierException
-			{
+	private void addEpisode( final int seasonId, final int seasonNumber, final com.omertron.thetvdbapi.model.Episode episodeBean ) throws OpenMMMidtierException
+	{
 		final Episode episode = new Episode();
 		episode.setAirDate( episodeBean.getFirstAired() );
 		episode.setDescription( episodeBean.getOverview() );
+		episode.setGuests( getGuestList( episodeBean ) );
 		if ( episodeBean.getDvdEpisodeNumber() == null )
 		{
 			episode.setDvdNum( episodeBean.getEpisodeNumber() );
@@ -227,7 +228,7 @@ public class TVDBAppImpl implements TVDBApp
 		log.debug( "Adding episode " + seasonNumber + 'x' + episode.getEpNum() + " - " + episode.getName() );
 
 		showMidtier.addEpisode( episode );
-			}
+	}
 
 	public List< Show > listShowsThatCanBeUpdated() throws OpenMMMidtierException
 	{
@@ -250,6 +251,24 @@ public class TVDBAppImpl implements TVDBApp
 			updateShow( show.getId() );
 		}
 
+	}
+
+	private String getGuestList( com.omertron.thetvdbapi.model.Episode episodeBean )
+	{
+		final StringBuilder guestBuffer = new StringBuilder( 1024 );
+		if ( episodeBean.getGuestStars() != null )
+		{
+			for ( final String guest: episodeBean.getGuestStars() )
+			{
+				if ( guestBuffer.length() > 0 )
+				{
+					guestBuffer.append( ", " );
+				}
+				guestBuffer.append( guest );
+			}
+		}
+		final String guests = guestBuffer.toString();
+		return guests;
 	}
 
 }

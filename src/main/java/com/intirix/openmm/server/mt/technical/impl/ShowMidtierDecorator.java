@@ -3,6 +3,7 @@ package com.intirix.openmm.server.mt.technical.impl;
 import java.util.List;
 
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
@@ -100,6 +101,16 @@ public class ShowMidtierDecorator implements ShowMidtier
 	public void assignFile( int episodeId, String file, long size ) throws OpenMMMidtierException
 	{
 		child.assignFile( episodeId, file, size );
+	}
+
+	public void unassignFile( int linkId ) throws OpenMMMidtierException
+	{
+		child.unassignFile( linkId );
+	}
+
+	public List< MediaLink > getEpisodeLinks( int episodeId ) throws OpenMMMidtierException
+	{
+		return child.getEpisodeLinks( episodeId );
 	}
 	
 	

@@ -1,6 +1,9 @@
 package com.intirix.openmm.server.mt.technical.sql;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -9,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
@@ -17,6 +21,7 @@ import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
 import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCountsObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.EpisodeObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.IntegerObjectFactory;
+import com.intirix.openmm.server.mt.technical.beans.MediaLinkObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
 import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCountsObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.SeasonObjectFactory;
@@ -159,9 +164,10 @@ public class ShowMidtierSQL implements ShowMidtier
 	{
 		try
 		{
+			final Object lastWatched = calcLastWatched( episode );
 			sqlHelper.executeUpdate( "show_episode_add.sql", episode.getSeasonId(), episode.getTvdbId(), episode.getName(),
 					episode.getEpNum(), episode.getDvdNum(), episode.getScreenshotPath(), episode.getDescription(),
-					episode.getAirDate(), episode.getRating(), episode.getLastWatched(), episode.getWatchCount() );
+					episode.getGuests(), episode.getAirDate(), episode.getRating(), lastWatched, episode.getWatchCount() );
 			return sqlHelper.executeQuerySingleRow( new IntegerObjectFactory(), "show_episode_find_id.sql", episode.getSeasonId(),
 					episode.getName(), episode.getEpNum() );
 		}
@@ -214,14 +220,31 @@ public class ShowMidtierSQL implements ShowMidtier
 	{
 		try
 		{
+			final Object lastWatched = calcLastWatched( newBean );
+			
 			sqlHelper.executeUpdate( "show_episode_update.sql", newBean.getSeasonId(), newBean.getTvdbId(), newBean.getName(),
 					newBean.getEpNum(), newBean.getDvdNum(), newBean.getScreenshotPath(), newBean.getDescription(),
-					newBean.getAirDate(), newBean.getRating(), newBean.getLastWatched(), newBean.getWatchCount(), oldBean.getId() );
+					newBean.getGuests(), newBean.getAirDate(), newBean.getRating(), lastWatched,
+					newBean.getWatchCount(), oldBean.getId() );
 		}
 		catch ( Exception e )
 		{
 			throw new OpenMMMidtierException( e );
 		}
+	}
+
+
+	private Object calcLastWatched( Episode episode ) throws ParseException
+	{
+		Object lastWatched = SQLNull.TimestampNull;
+		if ( episode.getLastWatched().length() > 0 )
+		{
+			final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy/MM/dd" );
+			final Date date = sdf.parse( episode.getLastWatched() );
+			final Timestamp ts = new Timestamp( date.getTime() );
+			lastWatched = ts;
+		}
+		return lastWatched;
 	}
 
 	public void watchEpisode( int episodeId ) throws OpenMMMidtierException
@@ -246,6 +269,32 @@ public class ShowMidtierSQL implements ShowMidtier
 		catch ( Exception e )
 		{
 			throw new OpenMMMidtierException( "Failed to assign file", e );
+		}
+	}
+
+
+	public void unassignFile( int linkId ) throws OpenMMMidtierException
+	{
+		try
+		{
+			sqlHelper.executeUpdate( "unassign_file.sql", linkId );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
+		}
+	}
+
+
+	public List< MediaLink > getEpisodeLinks( int episodeId ) throws OpenMMMidtierException
+	{
+		try
+		{
+			return sqlHelper.executeQuery( new MediaLinkObjectFactory(), "show_episode_list_links.sql", episodeId );
+		}
+		catch ( Exception e )
+		{
+			throw new OpenMMMidtierException( e );
 		}
 	}
 	

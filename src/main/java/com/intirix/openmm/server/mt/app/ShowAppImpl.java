@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.api.beans.EpisodeDetails;
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.SeasonDetails;
 import com.intirix.openmm.server.api.beans.Show;
@@ -238,6 +239,48 @@ public class ShowAppImpl implements ShowApp
 		}
 		bean.setScreenshotPath( webCacheApp.getWebCacheUrl( bean.getScreenshotPath() ) );
 		return bean;
+	}
+	
+	
+
+	public EpisodeDetails getEpisodeDetails( int showId, int seasonNumber, int epNum ) throws OpenMMMidtierException
+	{
+		final EpisodeDetails details = new EpisodeDetails();
+		details.setEpisode( getEpisode( showId, seasonNumber, epNum ) );
+		details.setLinks( showMidtier.getEpisodeLinks( details.getEpisode().getId() ).toArray( new MediaLink[]{} ) );
+		
+		countLinks( details );
+		
+		return details;
+	}
+
+	public EpisodeDetails getEpisodeDetails( int epid ) throws OpenMMMidtierException
+	{
+		final EpisodeDetails details = new EpisodeDetails();
+		details.setEpisode( getEpisode( epid ) );
+		details.setLinks( showMidtier.getEpisodeLinks( epid ).toArray( new MediaLink[]{} ) );
+		
+		countLinks( details );
+		
+		return details;
+	}
+
+	private void countLinks( final EpisodeDetails details )
+	{
+		for ( final MediaLink link: details.getLinks() )
+		{
+			if ( link.isAvailable() )
+			{
+				if ( link.isInternal() )
+				{
+					details.setNumInternalLinks( details.getNumInternalLinks() + 1 );
+				}
+				else
+				{
+					details.setNumExternalLinks( details.getNumExternalLinks() + 1 );
+				}
+			}
+		}
 	}
 
 	public void updateEpisode( Episode oldBean, Episode newBean ) throws OpenMMMidtierException

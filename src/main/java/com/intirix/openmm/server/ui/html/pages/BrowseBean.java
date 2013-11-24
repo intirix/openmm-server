@@ -2,6 +2,8 @@ package com.intirix.openmm.server.ui.html.pages;
 
 import org.simpleframework.xml.Default;
 
+import com.intirix.openmm.server.api.beans.FileEntry;
+import com.intirix.openmm.server.api.beans.FolderEntry;
 import com.intirix.openmm.server.ui.html.PageData;
 
 @Default
@@ -17,9 +19,9 @@ public class BrowseBean extends PageData
 
 	private String path;
 	
-	private String[] folders = new String[]{};
+	private FolderEntry[] folders = new FolderEntry[]{};
 	
-	private String[] files = new String[]{};
+	private FileEntry[] files = new FileEntry[]{};
 	
 	
 
@@ -43,26 +45,27 @@ public class BrowseBean extends PageData
 		this.path = path;
 	}
 
-	public String[] getFolders()
+	public FolderEntry[] getFolders()
 	{
 		return folders;
 	}
 
-	public void setFolders( String[] folders )
+	public void setFolders( FolderEntry[] folders )
 	{
 		this.folders = folders;
 	}
 
-	public String[] getFiles()
+	public FileEntry[] getFiles()
 	{
 		return files;
 	}
 
-	public void setFiles( String[] files )
+	public void setFiles( FileEntry[] files )
 	{
 		this.files = files;
 	}
-	
+
+
 	
 	
 }

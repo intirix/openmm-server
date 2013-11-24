@@ -3,7 +3,7 @@ package com.intirix.openmm.server.mt.technical.beans;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.mt.technical.sql.SQLHelper.ObjectFactory;
@@ -40,15 +40,22 @@ public class EpisodeObjectFactory implements ObjectFactory< Episode >
 		episode.setDvdNum( rs.getInt( "DVD_EPNUM" ) );
 		episode.setScreenshotPath( rs.getString( "SCREENSHOT_PATH" ) );
 		episode.setDescription( rs.getString( "DESCRIPTION" ) );
+		episode.setGuests( rs.getString( "GUESTS" ) );
 		episode.setAirDate( rs.getString( "AIR_DATE" ) );
 		episode.setRating( rs.getString( "RATING" ) );
 		
 		final Timestamp ts = rs.getTimestamp( "LAST_WATCHED" );
 		if ( ts != null )
 		{
-			final Calendar c = Calendar.getInstance();
-			c.setTimeInMillis( ts.getTime() );
-			episode.setLastWatched( c );
+			final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy/MM/dd" );
+			try
+			{
+				episode.setLastWatched( sdf.format( ts ) );
+			}
+			catch ( Exception e )
+			{
+				// ignore
+			}
 		}
 		episode.setWatchCount( rs.getInt( "WATCH_COUNT" ) );
 		

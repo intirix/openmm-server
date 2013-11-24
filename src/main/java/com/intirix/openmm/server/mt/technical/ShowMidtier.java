@@ -3,6 +3,7 @@ package com.intirix.openmm.server.mt.technical;
 import java.util.List;
 
 import com.intirix.openmm.server.api.beans.Episode;
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Season;
 import com.intirix.openmm.server.api.beans.Show;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
@@ -143,4 +144,19 @@ public interface ShowMidtier
 	 * @throws OpenMMMidtierException
 	 */
 	public void assignFile( int episodeId, String file, long size ) throws OpenMMMidtierException;
+	
+	/**
+	 * Unassign a file
+	 * @param linkId
+	 * @throws OpenMMMidtierException
+	 */
+	public void unassignFile( int linkId ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get the media links for the episodes
+	 * @param episodeId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< MediaLink > getEpisodeLinks( int episodeId ) throws OpenMMMidtierException;
 }

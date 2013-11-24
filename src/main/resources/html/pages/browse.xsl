@@ -20,7 +20,12 @@
 						</xsl:if>
 						<xsl:if test="//folders[@length>0]">
 							<ListViewDivider>Folders</ListViewDivider>
-							<xsl:apply-templates select="/browseBean/folders" mode="folder"/>
+							<xsl:for-each select="/browseBean/folders/folderEntry">
+								<ListViewItem>
+									<xsl:attribute name="href">/html/browse.html?path=<xsl:apply-templates select="/browseBean/path" /><xsl:apply-templates select="encodedName/node()" />/</xsl:attribute>
+									<xsl:apply-templates select="name/node()" />/
+								</ListViewItem>
+							</xsl:for-each>
 						</xsl:if>
 						<xsl:if test="//files[@length>0]">
 							<li class="ui-body ui-body-b">
@@ -34,7 +39,12 @@
 								</fieldset>
 							</li>
 							<ListViewDivider>Files</ListViewDivider>
-							<xsl:apply-templates select="/browseBean/files" mode="file"/>
+							<xsl:for-each select="/browseBean/files/fileEntry">
+								<ListViewItem rel="external">
+									<xsl:attribute name="href">/download<xsl:apply-templates select="/browseBean/path" />/<xsl:apply-templates select="encodedName/node()" /></xsl:attribute>
+									<xsl:apply-templates select="name/node()" />
+								</ListViewItem>
+							</xsl:for-each>
 						</xsl:if>
 					</ListView>
 				</Content>
@@ -42,18 +52,4 @@
 		</view>
 	</xsl:template>
 	
-	<xsl:template match="string" mode="folder">
-		<ListViewItem>
-			<xsl:attribute name="href">/html/browse.html?path=<xsl:apply-templates select="/browseBean/path" /><xsl:apply-templates select="node()" />/</xsl:attribute>
-			<xsl:apply-templates select="node()" />/
-		</ListViewItem>
-	</xsl:template>
-
-	<xsl:template match="string" mode="file">
-		<ListViewItem rel="external">
-			<xsl:attribute name="href">/download<xsl:apply-templates select="/browseBean/path" />/<xsl:apply-templates select="node()" /></xsl:attribute>
-			<xsl:apply-templates select="node()" />
-		</ListViewItem>
-	</xsl:template>
-
 </xsl:stylesheet>
