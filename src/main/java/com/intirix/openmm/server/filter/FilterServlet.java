@@ -7,6 +7,7 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -36,6 +37,24 @@ public class FilterServlet extends HttpServlet
 		this.filters = filters;
 		this.child = child;
 	}
+	
+	
+
+	@Override
+	public void destroy()
+	{
+		child.destroy();
+	}
+
+
+
+	@Override
+	public void init( ServletConfig config ) throws ServletException
+	{
+		child.init( config );
+	}
+
+
 
 	@Override
 	protected void service( final HttpServletRequest req, final HttpServletResponse resp ) throws ServletException, IOException
