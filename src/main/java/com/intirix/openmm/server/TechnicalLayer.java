@@ -2,6 +2,7 @@ package com.intirix.openmm.server;
 
 import com.intirix.openmm.server.mt.technical.ConfigMidtier;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.UserMidtier;
 import com.intirix.openmm.server.mt.technical.WebCacheMidtier;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBMidtier;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBMidtierImpl;
@@ -22,6 +23,7 @@ public class TechnicalLayer
 	
 	private TVDBMidtier tvdbMidtier = new TVDBMidtierImpl();
 	
+	private UserMidtier userMidtier;
 
 
 	public ConfigMidtier getConfigMidtier()
@@ -68,4 +70,15 @@ public class TechnicalLayer
 		this.tvdbMidtier = tvdbMidtier;
 	}
 
+	public UserMidtier getUserMidtier()
+	{
+		return userMidtier;
+	}
+
+	public void setUserMidtier( UserMidtier userMidtier )
+	{
+		this.userMidtier = userMidtier;
+	}
+
+	
 }

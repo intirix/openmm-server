@@ -2,7 +2,10 @@ package com.intirix.openmm.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.Filter;
 import javax.servlet.Servlet;
 
 import org.apache.log4j.Level;
@@ -14,6 +17,8 @@ import Acme.Serve.Serve;
 
 import com.intirix.openmm.server.api.QueryServlet;
 import com.intirix.openmm.server.api.UpdateServlet;
+import com.intirix.openmm.server.filter.AuthenticationFilter;
+import com.intirix.openmm.server.filter.FilterServlet;
 import com.intirix.openmm.server.ui.RootRedirectServlet;
 import com.intirix.openmm.server.ui.SingleStaticFileServlet;
 import com.intirix.openmm.server.ui.StaticResourceServlet;
@@ -35,6 +40,8 @@ public class OpenMMServer
 	private final OpenMMServerRuntime runtime;
 
 	private final Serve server = new Serve();
+	
+	private final List< Filter > filters = new ArrayList< Filter >();
 
 	public OpenMMServer() throws IOException
 	{
@@ -83,45 +90,56 @@ public class OpenMMServer
 		properties.setProperty( Acme.Serve.Serve.ARG_NOHUP, "nohup" );
 		server.arguments = properties;
 	}
+	
+	private void mapServlet( String uri, Servlet servlet )
+	{
+		server.addServlet( uri, new FilterServlet( filters, servlet ) );
+	}
 
 	private void initServlets()
 	{
+		final AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+		authenticationFilter.setUserApp( runtime.getApplicationLayer().getUserApp() );
+		
+		filters.add( authenticationFilter );
+		
+		
 		final HtmlTemplateEngineServlet htmlServlet = new HtmlTemplateEngineServlet( runtime );
-		server.addServlet( "/html", htmlServlet );
-		server.addServlet( "/html/*", htmlServlet );
+		mapServlet( "/html", htmlServlet );
+		mapServlet( "/html/*", htmlServlet );
 
 		final Servlet webjarsServlet = new StaticResourceServlet( "/META-INF/resources/webjars" );
-		server.addServlet( "/staticlib", webjarsServlet );
-		server.addServlet( "/staticlib/*", webjarsServlet );
+		mapServlet( "/staticlib", webjarsServlet );
+		mapServlet( "/staticlib/*", webjarsServlet );
 
 		final Servlet staticServlet = new StaticResourceServlet( "/web" );
-		server.addServlet( "/static", staticServlet );
-		server.addServlet( "/static/*", staticServlet );
+		mapServlet( "/static", staticServlet );
+		mapServlet( "/static/*", staticServlet );
 		
 		final FileServlet fileServlet = new VFSFileServlet();
 		fileServlet.setRuntime( runtime );
-		server.addServlet( "/download", fileServlet );
-		server.addServlet( "/download/*", fileServlet );
+		mapServlet( "/download", fileServlet );
+		mapServlet( "/download/*", fileServlet );
 		
 		final UpdateServlet updateServlet = new UpdateServlet();
 		updateServlet.setEngine( runtime.getActionEngine() );
-		server.addServlet( "/api/update", updateServlet );
+		mapServlet( "/api/update", updateServlet );
 		
 		final QueryServlet queryServlet = new QueryServlet();
 		queryServlet.setRuntime( runtime );
-		server.addServlet( "/api/get", queryServlet );
-		server.addServlet( "/api/get/*", queryServlet );
+		mapServlet( "/api/get", queryServlet );
+		mapServlet( "/api/get/*", queryServlet );
 
 		final FileServlet webCacheServlet = new WebCacheFileServlet();
 		webCacheServlet.setRuntime( runtime );
-		server.addServlet( "/cache", webCacheServlet );
-		server.addServlet( "/cache/*", webCacheServlet );
+		mapServlet( "/cache", webCacheServlet );
+		mapServlet( "/cache/*", webCacheServlet );
 
 
 		server.addServlet( "/favicon.ico", new SingleStaticFileServlet( "/ic_launcher-web.ico" ) );
 
 		// redirect the root to the website
-		server.addServlet( "/index.html", new RootRedirectServlet() );
+		mapServlet( "/index.html", new RootRedirectServlet() );
 		server.addServlet( "/", new RootRedirectServlet() );
 	}
 	

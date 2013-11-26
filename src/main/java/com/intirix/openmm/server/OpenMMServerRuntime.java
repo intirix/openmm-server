@@ -19,10 +19,13 @@ import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.ShowAppImpl;
 import com.intirix.openmm.server.mt.app.TVDBApp;
 import com.intirix.openmm.server.mt.app.TVDBAppImpl;
+import com.intirix.openmm.server.mt.app.UserApp;
+import com.intirix.openmm.server.mt.app.UserAppImpl;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 import com.intirix.openmm.server.mt.technical.sql.ConfigMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.ShowMidtierSQL;
+import com.intirix.openmm.server.mt.technical.sql.UserMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.WebCacheMidtierSQL;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBApiKeyUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBApiKeyUpdatedEventListener;
@@ -98,6 +101,7 @@ public class OpenMMServerRuntime
 		getTechnicalLayer().setConfigMidtier( new ConfigMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setWebCacheMidtier( new WebCacheMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
+		getTechnicalLayer().setUserMidtier( new UserMidtierSQL( getDataSource() ) );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
@@ -118,6 +122,9 @@ public class OpenMMServerRuntime
 			getTechnicalLayer().getTvdbMidtier().setTvdbKey( config.getTvdbKey() );
 		}
 		
+		final UserApp userApp = new UserAppImpl();
+		userApp.setUserMidtier( getTechnicalLayer().getUserMidtier() );
+		getApplicationLayer().setUserApp( userApp );
 		
 		
 		wireMessageBus();
