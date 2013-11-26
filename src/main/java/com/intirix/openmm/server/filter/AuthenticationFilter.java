@@ -67,7 +67,7 @@ public class AuthenticationFilter implements Filter
 				else
 				{
 					response.setHeader( "WWW-Authenticate", "Basic realm=\"OpenMM\"" );
-					response.sendError( 403 );
+					response.sendError( 401 );
 				}
 			}
 			catch ( OpenMMMidtierException e )

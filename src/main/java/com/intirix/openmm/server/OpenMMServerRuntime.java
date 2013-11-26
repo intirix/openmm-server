@@ -23,6 +23,8 @@ import com.intirix.openmm.server.mt.app.UserApp;
 import com.intirix.openmm.server.mt.app.UserAppImpl;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
+import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
+import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
 import com.intirix.openmm.server.mt.technical.sql.ConfigMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.ShowMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.UserMidtierSQL;
@@ -98,10 +100,10 @@ public class OpenMMServerRuntime
 
 		actionEngine.setRuntime( this );
 
-		getTechnicalLayer().setConfigMidtier( new ConfigMidtierSQL( getDataSource() ) );
+		getTechnicalLayer().setConfigMidtier( new ConfigMidtierCache( new ConfigMidtierSQL( getDataSource() ) ) );
 		getTechnicalLayer().setWebCacheMidtier( new WebCacheMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
-		getTechnicalLayer().setUserMidtier( new UserMidtierSQL( getDataSource() ) );
+		getTechnicalLayer().setUserMidtier( new UserMidtierCache( new UserMidtierSQL( getDataSource() ) ) );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
