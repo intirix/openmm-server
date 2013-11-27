@@ -66,6 +66,14 @@ public class LocalFileSystem implements VFileSystem
 		}
 		return ret.toArray( new String[]{} );
 	}
+	
+	
+
+	public boolean isDirectory( String path ) throws IOException
+	{
+		final File f = new File( basePath + '/' + path );
+		return ( f.exists() && f.isDirectory() );
+	}
 
 	public long getModifyTimestamp( String path ) throws IOException
 	{

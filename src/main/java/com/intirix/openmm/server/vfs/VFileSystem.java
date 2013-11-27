@@ -22,6 +22,14 @@ public interface VFileSystem
 	public String[] listFiles( String path ) throws IOException;
 	
 	/**
+	 * Is the path a directory
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean isDirectory( String path ) throws IOException;
+	
+	/**
 	 * Get the modify timestamp of a file
 	 * @param path
 	 * @return

@@ -230,6 +230,75 @@ public class FileSystemBrowser implements VFileSystem
 
 		return ret;
 	}
+	
+	
+
+	public boolean isDirectory( String path ) throws IOException
+	{
+		// if we pass in '/', then just return true
+		if ( "/".equals( path ) )
+		{
+			return true;
+		}
+		
+		final String[] parts = path.split( "/" );
+		VNode node = root;
+
+		final StringBuilder buffer = new StringBuilder( 128 );
+
+		for ( int i = 0; i < parts.length; i++ )
+		{
+			final String p = parts[ i ];
+			String base = null;
+			if ( p.length() > 0 )
+			{
+				VNode n = node.getSubFolder( p );
+				if ( n == null )
+				{
+					n = new VNode( p );
+					node.addFolder( n );
+				}
+				node = n;
+
+
+				buffer.append( '/' );
+				buffer.append( node.getName() );
+
+
+				base = buffer.toString();
+			}
+			else if ( p.length() == 0 && i == 0 )
+			{
+				base = "/";
+			}
+
+			for ( final VFileSystem vfs: node.getMounts() )
+			{
+				String vfsSubPath = "/";
+				if ( base.length() > 1 )
+				{
+					vfsSubPath = path.replace( base, "" );
+				}
+				String vfsSubDir = "/";
+				if ( vfsSubPath.length() <= 1 )
+				{
+					vfsSubDir = "/";
+				}
+				else
+				{
+					vfsSubDir = new File( vfsSubDir ).getParent();
+				}
+
+				// this means it is a directory
+				if ( vfs.isDirectory( vfsSubPath ) )
+				{
+					return true;
+				}
+			}			
+		}
+
+		return false;
+	}
 
 	public long getModifyTimestamp( String path ) throws IOException
 	{
