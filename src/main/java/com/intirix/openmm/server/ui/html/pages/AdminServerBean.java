@@ -17,6 +17,8 @@ public class AdminServerBean extends PageData
 	private int httpPort;
 	
 	private String tvdbKey = "";
+	
+	private String rtKey = "";
 
 	public int getHttpPort()
 	{
@@ -36,6 +38,16 @@ public class AdminServerBean extends PageData
 	public void setTvdbKey( String tvdbKey )
 	{
 		this.tvdbKey = tvdbKey;
+	}
+
+	public String getRtKey()
+	{
+		return rtKey;
+	}
+
+	public void setRtKey( String rtKey )
+	{
+		this.rtKey = rtKey;
 	}
 	
 	

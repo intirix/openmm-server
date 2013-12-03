@@ -40,11 +40,11 @@ public class PostActionEngine
 				obj.setRuntime( runtime );
 				return obj;
 			}
-			throw new OpenMMAPIException( "Could not find action" );
+			throw new OpenMMAPIException( "Could not find action [" + action + ']' );
 		}
 		catch ( Exception e )
 		{
-			throw new OpenMMAPIException( "Could not find action", e );
+			throw new OpenMMAPIException( "Could not find action [" + action + ']', e );
 		}
 	}
 }

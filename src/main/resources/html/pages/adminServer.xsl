@@ -24,6 +24,12 @@
 							<xsl:attribute name="value"><xsl:apply-templates
 								select="//tvdbKey" /></xsl:attribute>
 						</input>
+						<label for="updateServerRtKey">${ui.admin.server.updateServer.rtKeyLabel}
+						</label>
+						<input type="text" name="rtKey" id="updateServerRtKey">
+							<xsl:attribute name="value"><xsl:apply-templates
+								select="//rtKey" /></xsl:attribute>
+						</input>
 						<input type="submit">
 							<xsl:attribute name="value">${ui.admin.server.updateServer.updateButton}</xsl:attribute>
 						</input>

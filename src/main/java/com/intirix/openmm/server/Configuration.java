@@ -24,6 +24,8 @@ public class Configuration
 	
 	private String tvdbKey = "";
 	
+	private String rottenTomatoesKey = "";
+	
 	private String webCache;
 	
 	private String baseUrl = "";
@@ -64,6 +66,7 @@ public class Configuration
 	 */
 	public void loadFromProperties( Properties props )
 	{
+		rottenTomatoesKey = props.getProperty( "rottenTomatoesKey", "" );
 		tvdbKey = props.getProperty( "tvdbKey", "" );
 		baseUrl = props.getProperty( "baseUrl", "" );
 		webCache = props.getProperty( "webCache", System.getProperty( "user.home" ) + "/.openmm-server/webCache" );
@@ -79,6 +82,7 @@ public class Configuration
 	public void writeToProperties( Properties props )
 	{
 		props.setProperty( "tvdbKey", tvdbKey );
+		props.setProperty( "rottenTomatoesKey", rottenTomatoesKey );
 		props.setProperty( "webCache", webCache );
 		props.setProperty( "baseUrl", baseUrl );
 		props.setProperty( "dbPath", databasePath );
@@ -164,6 +168,16 @@ public class Configuration
 	public void setBaseUrl( String baseUrl )
 	{
 		this.baseUrl = baseUrl;
+	}
+
+	public String getRottenTomatoesKey()
+	{
+		return rottenTomatoesKey;
+	}
+
+	public void setRottenTomatoesKey( String rottenTomatoesKey )
+	{
+		this.rottenTomatoesKey = rottenTomatoesKey;
 	}
 
 

@@ -1,5 +1,6 @@
 package com.intirix.openmm.server;
 
+import com.intirix.openmm.server.mt.app.RTApp;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.TVDBApp;
 import com.intirix.openmm.server.mt.app.UserApp;
@@ -16,6 +17,8 @@ public class ApplicationLayer
 	private WebCacheApp webCacheApp;
 	
 	private TVDBApp tvdbApp;
+	
+	private RTApp rtApp;
 	
 	private ShowApp showApp;
 	
@@ -39,6 +42,17 @@ public class ApplicationLayer
 	public void setTvdbApp( TVDBApp tvdbApp )
 	{
 		this.tvdbApp = tvdbApp;
+	}
+
+	
+	public RTApp getRtApp()
+	{
+		return rtApp;
+	}
+
+	public void setRtApp( RTApp rtApp )
+	{
+		this.rtApp = rtApp;
 	}
 
 	public ShowApp getShowApp()

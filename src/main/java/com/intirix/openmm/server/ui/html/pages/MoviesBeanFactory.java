@@ -7,7 +7,7 @@ import com.intirix.openmm.server.OpenMMServerRuntime;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
 import com.intirix.openmm.server.ui.html.PageData;
 
-public class AdminServerBeanFactory implements PageBeanFactory
+public class MoviesBeanFactory implements PageBeanFactory
 {
 	private OpenMMServerRuntime runtime;
 
@@ -18,11 +18,10 @@ public class AdminServerBeanFactory implements PageBeanFactory
 
 	public PageData createPageBean( HttpServletRequest request, Object actionResult ) throws ServletException
 	{
-		final AdminServerBean page = new AdminServerBean();
-		
-		page.setHttpPort( runtime.getConfig().getHttpPort() );
-		page.setTvdbKey( runtime.getConfig().getTvdbKey() );
-		page.setRtKey( runtime.getConfig().getRottenTomatoesKey() );
+		final MoviesBean page = new MoviesBean();
+
+		page.setHasRTKey( runtime.getTechnicalLayer().getRtMidtier().hasKey() );
+
 
 		return page;
 	}

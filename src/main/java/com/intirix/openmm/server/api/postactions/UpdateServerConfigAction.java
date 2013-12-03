@@ -9,6 +9,7 @@ import com.intirix.openmm.server.Configuration;
 import com.intirix.openmm.server.api.PostAction;
 import com.intirix.openmm.server.api.PostActionResult;
 import com.intirix.openmm.server.events.MessageBus;
+import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBApiKeyUpdatedEvent;
 
 public class UpdateServerConfigAction extends PostAction
@@ -27,19 +28,28 @@ public class UpdateServerConfigAction extends PostAction
 		{
 
 			final Configuration config = getRuntime().getConfig();
-			
+
 			if ( req.getParameter( "httpPort" ) != null )
 			{
 				config.setHttpPort( Integer.parseInt( req.getParameter( "httpPort" ) ) );
 			}
-			
+
 			final String tvdbKey = req.getParameter( "tvdbKey" );
-			if ( tvdbKey != null )
+			if ( tvdbKey != null && !tvdbKey.equals( config.getTvdbKey() ) )
 			{
 				config.setTvdbKey( tvdbKey );
 				final TVDBApiKeyUpdatedEvent event = new TVDBApiKeyUpdatedEvent( tvdbKey );
 				MessageBus.getInstance().handleEvent( event );
 			}
+			
+			final String rtKey = req.getParameter( "rtKey" );
+			if ( rtKey != null && !rtKey.equals( config.getRottenTomatoesKey() ) )
+			{
+				config.setRottenTomatoesKey( rtKey );
+				final RottenTomatoesApiKeyUpdatedEvent event = new RottenTomatoesApiKeyUpdatedEvent( rtKey );
+				MessageBus.getInstance().handleEvent( event );
+			}
+			
 			config.saveToUserDir();
 
 			result.setActionMessage( "Successfully updated server config" );

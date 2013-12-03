@@ -15,6 +15,8 @@ import com.googlecode.flyway.core.Flyway;
 import com.intirix.openmm.server.api.PostActionEngine;
 import com.intirix.openmm.server.events.MessageBus;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
+import com.intirix.openmm.server.mt.app.RTApp;
+import com.intirix.openmm.server.mt.app.RTAppImpl;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.ShowAppImpl;
 import com.intirix.openmm.server.mt.app.TVDBApp;
@@ -25,7 +27,10 @@ import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
+import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEvent;
+import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEventListener;
 import com.intirix.openmm.server.mt.technical.sql.ConfigMidtierSQL;
+import com.intirix.openmm.server.mt.technical.sql.MovieMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.ShowMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.UserMidtierSQL;
 import com.intirix.openmm.server.mt.technical.sql.WebCacheMidtierSQL;
@@ -104,6 +109,7 @@ public class OpenMMServerRuntime
 		getTechnicalLayer().setWebCacheMidtier( new WebCacheMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setUserMidtier( new UserMidtierCache( new UserMidtierSQL( getDataSource() ) ) );
+		getTechnicalLayer().setMovieMidtier( new MovieMidtierSQL( getDataSource() ) );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
@@ -119,9 +125,18 @@ public class OpenMMServerRuntime
 		showApp.setWebCacheApp( webCacheApp );
 		getApplicationLayer().setShowApp( showApp );
 		
+		final RTApp rtApp = new RTAppImpl();
+		rtApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
+		rtApp.setRTMidtier( getTechnicalLayer().getRtMidtier() );
+		getApplicationLayer().setRtApp( rtApp );
+		
 		if ( config.getTvdbKey().length() > 0 )
 		{
 			getTechnicalLayer().getTvdbMidtier().setTvdbKey( config.getTvdbKey() );
+		}
+		if ( config.getRottenTomatoesKey().length() > 0 )
+		{
+			getTechnicalLayer().getRtMidtier().setKey( config.getRottenTomatoesKey() );
 		}
 		
 		final UserApp userApp = new UserAppImpl();
@@ -139,6 +154,7 @@ public class OpenMMServerRuntime
 	{
 		final MessageBus bus = MessageBus.getInstance();
 		bus.addListener( TVDBApiKeyUpdatedEvent.class, new TVDBApiKeyUpdatedEventListener( getTechnicalLayer().getTvdbMidtier() ) );
+		bus.addListener( RottenTomatoesApiKeyUpdatedEvent.class, new RottenTomatoesApiKeyUpdatedEventListener( getTechnicalLayer().getRtMidtier() ) );
 	}
 
 	public Configuration getConfig()
