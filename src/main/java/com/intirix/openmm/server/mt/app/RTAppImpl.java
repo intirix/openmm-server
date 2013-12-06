@@ -50,7 +50,7 @@ public class RTAppImpl implements RTApp
 		}
 		movie.setGenre( genres.toString() );
 		movie.setMpaaRating( rtmovie.mpaaRating );
-		movie.setName( movie.getDisplayName().replace( "The ", "" ) );
+		movie.setName( movie.getDisplayName().replaceFirst( "The ", "" ) );
 		if ( rtmovie.posters != null )
 		{
 			movie.setPosterUrl( rtmovie.posters.original );

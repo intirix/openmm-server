@@ -1,15 +1,29 @@
-package com.intirix.openmm.server.mt.technical;
+package com.intirix.openmm.server.mt.app;
 
 import java.util.List;
 
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
+import com.intirix.openmm.server.mt.technical.MovieMidtier;
 import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 
-public interface MovieMidtier
+public interface MovieApp
 {
+	/**
+	 * Set the movie midtier
+	 * @param midtier
+	 */
+	public void setMovieMidtier( MovieMidtier midtier );
+	
+	/**
+	 * Set the WebCacheApp pointer
+	 * @param webCacheApp
+	 */
+	public void setWebCacheApp( WebCacheApp webCacheApp );
 
+
+	
 	/**
 	 * Add a movie
 	 * @param movie
@@ -33,18 +47,26 @@ public interface MovieMidtier
 	public void updateMovie( Movie oldBean, Movie newBean ) throws OpenMMMidtierException;
 	
 	/**
-	 * List movie prefixes
-	 * @return
-	 * @throws OpenMMMidtierException
-	 */
-	public List< MoviePrefixCounts > listMoviePrefixes() throws OpenMMMidtierException;
-	
-	/**
 	 * List all movies
 	 * @return
 	 * @throws OpenMMMidtierException
 	 */
 	public List< Movie > listMovies() throws OpenMMMidtierException;
+	
+	/**
+	 * Get a movie by id
+	 * @param movieId
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public Movie getMovieById( int movieId ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get all the movie prefices and their counts
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< MoviePrefixCounts > listMoviePrefixes() throws OpenMMMidtierException;
 	
 	/**
 	 * Assign a file to a movie
@@ -77,5 +99,6 @@ public interface MovieMidtier
 	 * @throws OpenMMMidtierException
 	 */
 	public List< MediaLink > getMovieLinks( int movieId ) throws OpenMMMidtierException;
+
 
 }

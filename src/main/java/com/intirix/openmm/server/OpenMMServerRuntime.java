@@ -15,6 +15,8 @@ import com.googlecode.flyway.core.Flyway;
 import com.intirix.openmm.server.api.PostActionEngine;
 import com.intirix.openmm.server.events.MessageBus;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
+import com.intirix.openmm.server.mt.app.MovieApp;
+import com.intirix.openmm.server.mt.app.MovieAppImpl;
 import com.intirix.openmm.server.mt.app.RTApp;
 import com.intirix.openmm.server.mt.app.RTAppImpl;
 import com.intirix.openmm.server.mt.app.ShowApp;
@@ -124,6 +126,11 @@ public class OpenMMServerRuntime
 		showApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
 		showApp.setWebCacheApp( webCacheApp );
 		getApplicationLayer().setShowApp( showApp );
+		
+		final MovieApp movieApp = new MovieAppImpl();
+		movieApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
+		movieApp.setWebCacheApp( webCacheApp );
+		getApplicationLayer().setMovieApp( movieApp );
 		
 		final RTApp rtApp = new RTAppImpl();
 		rtApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );

@@ -15,7 +15,7 @@
 						<ListViewItem href="/html/moviesRTSearch.html">${ui.movies.menu.rt}
 						</ListViewItem>
 						</xsl:if>
-						<ListViewItem href="/html/moviesList.html">${ui.movies.menu.list}
+						<ListViewItem href="/html/moviesPrefixList.html">${ui.movies.menu.list}
 						</ListViewItem>
 					</ListView>
 				</Content>

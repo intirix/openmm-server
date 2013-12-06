@@ -14,7 +14,7 @@ public class MovieObjectFactory implements ObjectFactory< Movie >
 		final Movie movie = new Movie();
 		
 		movie.setDescription( rs.getString( "DESCRIPTION" ) );
-		movie.setDisplayName( rs.getString( "NAME" ) );
+		movie.setDisplayName( rs.getString( "DISPLAY_NAME" ) );
 		movie.setGenre( rs.getString( "GENRE" ) );
 		movie.setId( rs.getInt( "MOVIE_ID" ) );
 		movie.setImdbId( rs.getString( "IMDB_NUMBER" ) );

@@ -2,9 +2,11 @@ package com.intirix.openmm.server.mt.technical.impl;
 
 import java.util.List;
 
+import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.MovieMidtier;
+import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 
 public class MovieMidtierDecorator implements MovieMidtier
 {
@@ -30,6 +32,13 @@ public class MovieMidtierDecorator implements MovieMidtier
 	{
 		child.updateMovie( oldBean, newBean );
 	}
+	
+	
+
+	public List< MoviePrefixCounts > listMoviePrefixes() throws OpenMMMidtierException
+	{
+		return child.listMoviePrefixes();
+	}
 
 	public List< Movie > listMovies() throws OpenMMMidtierException
 	{
@@ -41,4 +50,20 @@ public class MovieMidtierDecorator implements MovieMidtier
 		child.watchMovie( movieId );
 	}
 
+	public void assignFile( int movieId, String file, long size ) throws OpenMMMidtierException
+	{
+		child.assignFile( movieId, file, size );
+	}
+
+	public void unassignFile( int linkId ) throws OpenMMMidtierException
+	{
+		child.unassignFile( linkId );
+	}
+
+	public List< MediaLink > getMovieLinks( int movieId ) throws OpenMMMidtierException
+	{
+		return child.getMovieLinks( movieId );
+	}
+
+	
 }
