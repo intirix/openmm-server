@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
+import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
-import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 
 public interface MovieMidtier
 {

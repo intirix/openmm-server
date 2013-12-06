@@ -12,8 +12,8 @@ import org.junit.Test;
 import com.intirix.openmm.server.MockHttpServletRequest;
 import com.intirix.openmm.server.MockSystemFactory;
 import com.intirix.openmm.server.OpenMMServerRuntime;
+import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.app.MovieApp;
-import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.ui.html.HtmlTemplateEngine;
 
 public class TestMoviesPrefixList extends XMLTestCase

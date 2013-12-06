@@ -4,8 +4,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.intirix.openmm.server.OpenMMServerRuntime;
+import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
-import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
 import com.intirix.openmm.server.ui.html.PageData;
 

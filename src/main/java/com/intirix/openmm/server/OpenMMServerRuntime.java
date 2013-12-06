@@ -28,6 +28,7 @@ import com.intirix.openmm.server.mt.app.UserAppImpl;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
+import com.intirix.openmm.server.mt.technical.impl.cache.MovieMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
 import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEventListener;
@@ -111,7 +112,7 @@ public class OpenMMServerRuntime
 		getTechnicalLayer().setWebCacheMidtier( new WebCacheMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setUserMidtier( new UserMidtierCache( new UserMidtierSQL( getDataSource() ) ) );
-		getTechnicalLayer().setMovieMidtier( new MovieMidtierSQL( getDataSource() ) );
+		getTechnicalLayer().setMovieMidtier( new MovieMidtierCache( new MovieMidtierSQL( getDataSource() ) ) );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );

@@ -2,7 +2,7 @@ package com.intirix.openmm.server.ui.html.pages;
 
 import org.simpleframework.xml.Default;
 
-import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
+import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.ui.html.PageData;
 
 @Default

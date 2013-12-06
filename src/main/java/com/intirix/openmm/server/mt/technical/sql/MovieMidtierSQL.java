@@ -7,12 +7,12 @@ import javax.sql.DataSource;
 
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
+import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.MovieMidtier;
 import com.intirix.openmm.server.mt.technical.beans.IntegerObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.MediaLinkObjectFactory;
 import com.intirix.openmm.server.mt.technical.beans.MovieObjectFactory;
-import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.technical.beans.MoviePrefixCountsObjectFactory;
 
 public class MovieMidtierSQL implements MovieMidtier
