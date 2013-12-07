@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
+import com.intirix.openmm.server.api.beans.MovieDetails;
 import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.MovieMidtier;
@@ -52,6 +53,14 @@ public interface MovieApp
 	 * @throws OpenMMMidtierException
 	 */
 	public List< Movie > listMovies() throws OpenMMMidtierException;
+	
+	/**
+	 * Get movie details for all movies that start with a prefix
+	 * @param prefix
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public List< MovieDetails > listMovieDetails( String prefix ) throws OpenMMMidtierException;
 	
 	/**
 	 * Get a movie by id

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
+import com.intirix.openmm.server.api.beans.MovieDetails;
 import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.MovieMidtier;
 
@@ -58,6 +59,34 @@ public class TestMovieAppImpl
 		{
 			Assert.assertTrue( e.getMessage().contains( "Could not find" ) );
 		}
+	}
+	
+	@Test
+	public void testListMovieDetails() throws OpenMMMidtierException
+	{
+		final List< Movie > list = new ArrayList< Movie >( 2 );
+		
+		final Movie m1 = new Movie();
+		m1.setId( 4 );
+		m1.setName( "ABC" );
+		list.add( m1 );
+
+		final Movie m2 = new Movie();
+		m2.setId( 5 );
+		m2.setName( "DEF" );
+		list.add( m2 );
+		
+		final List< MediaLink > links = new ArrayList< MediaLink >();
+		final MediaLink link1 = new MediaLink();
+		link1.setAvailable( true );
+		links.add( link1 );
+
+		
+		EasyMock.expect( impl.getMovieMidtier().listMovies() ).andReturn( list );
+		EasyMock.expect( impl.getMovieMidtier().getMovieLinks( m1.getId() ) ).andReturn( links );
+		EasyMock.replay( impl.getMovieMidtier() );
+		final List< MovieDetails > details = impl.listMovieDetails( "A" );
+		Assert.assertTrue( details.get( 0 ).isAvailable() );
 	}
 
 }
