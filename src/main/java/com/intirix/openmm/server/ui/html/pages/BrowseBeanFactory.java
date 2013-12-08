@@ -12,6 +12,7 @@ import com.intirix.openmm.server.api.beans.FileEntry;
 import com.intirix.openmm.server.api.beans.FolderEntry;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
 import com.intirix.openmm.server.ui.html.PageData;
+import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
 public class BrowseBeanFactory implements PageBeanFactory
 {
@@ -38,8 +39,9 @@ public class BrowseBeanFactory implements PageBeanFactory
 		
 		try
 		{
+			final FileSystemBrowser browser = runtime.getApplicationLayer().getVfsApp().getBrowser();
 			final List< FolderEntry > folders = new ArrayList< FolderEntry >();
-			for ( final String folder: runtime.getVFSBrowser().listFolders( page.getPath() ) )
+			for ( final String folder: browser.listFolders( page.getPath() ) )
 			{
 				final FolderEntry entry = new FolderEntry();
 				entry.setName( folder );
@@ -48,7 +50,7 @@ public class BrowseBeanFactory implements PageBeanFactory
 			page.setFolders( folders.toArray( new FolderEntry[]{} ) );
 			
 			final List< FileEntry > files = new ArrayList< FileEntry >();
-			for ( final String file: runtime.getVFSBrowser().listFiles( page.getPath() ) )
+			for ( final String file: browser.listFiles( page.getPath() ) )
 			{
 				final FileEntry entry = new FileEntry();
 				entry.setName( file );

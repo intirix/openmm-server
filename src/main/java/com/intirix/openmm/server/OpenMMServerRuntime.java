@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import com.googlecode.flyway.core.Flyway;
 import com.intirix.openmm.server.api.PostActionEngine;
 import com.intirix.openmm.server.events.MessageBus;
-import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.app.MovieApp;
 import com.intirix.openmm.server.mt.app.MovieAppImpl;
 import com.intirix.openmm.server.mt.app.RTApp;
@@ -25,8 +24,10 @@ import com.intirix.openmm.server.mt.app.TVDBApp;
 import com.intirix.openmm.server.mt.app.TVDBAppImpl;
 import com.intirix.openmm.server.mt.app.UserApp;
 import com.intirix.openmm.server.mt.app.UserAppImpl;
+import com.intirix.openmm.server.mt.app.VFSApp;
+import com.intirix.openmm.server.mt.app.VFSAppCache;
+import com.intirix.openmm.server.mt.app.VFSAppImpl;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
-import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.MovieMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
@@ -40,7 +41,6 @@ import com.intirix.openmm.server.mt.technical.sql.WebCacheMidtierSQL;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBApiKeyUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.tvdb.TVDBApiKeyUpdatedEventListener;
 import com.intirix.openmm.server.vfs.FileSystemBrowser;
-import com.intirix.openmm.server.vfs.FileSystemFactory;
 import com.intirix.openmm.server.vfs.LocalFileSystem;
 
 /**
@@ -113,6 +113,11 @@ public class OpenMMServerRuntime
 		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
 		getTechnicalLayer().setUserMidtier( new UserMidtierCache( new UserMidtierSQL( getDataSource() ) ) );
 		getTechnicalLayer().setMovieMidtier( new MovieMidtierCache( new MovieMidtierSQL( getDataSource() ) ) );
+		
+		final VFSApp vfsApp = new VFSAppImpl();
+		final VFSAppCache vfsAppCache = new VFSAppCache( vfsApp );
+		vfsAppCache.setConfigMidtier( getTechnicalLayer().getConfigMidtier() );
+		getApplicationLayer().setVfsApp( vfsAppCache );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
@@ -205,22 +210,6 @@ public class OpenMMServerRuntime
 	public void setActionEngine( PostActionEngine actionEngine )
 	{
 		this.actionEngine = actionEngine;
-	}
-
-	/**
-	 * Get the browser
-	 * @return
-	 * @throws OpenMMMidtierException
-	 */
-	public FileSystemBrowser getVFSBrowser() throws OpenMMMidtierException
-	{
-		final FileSystemBrowser browser = new FileSystemBrowser();
-		for ( final RootFolder folder: getTechnicalLayer().getConfigMidtier().listRootFolders() )
-		{
-			browser.mount( folder.getMountPoint(), new FileSystemFactory().createFileSystem( folder ) );
-		}
-
-		return browser;
 	}
 
 	/**

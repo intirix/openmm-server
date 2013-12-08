@@ -5,6 +5,7 @@ import com.intirix.openmm.server.mt.app.RTApp;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.TVDBApp;
 import com.intirix.openmm.server.mt.app.UserApp;
+import com.intirix.openmm.server.mt.app.VFSApp;
 import com.intirix.openmm.server.mt.app.WebCacheApp;
 
 /**
@@ -14,6 +15,7 @@ import com.intirix.openmm.server.mt.app.WebCacheApp;
  */
 public class ApplicationLayer
 {
+	private VFSApp vfsApp;
 
 	private WebCacheApp webCacheApp;
 	
@@ -27,6 +29,18 @@ public class ApplicationLayer
 	
 	private UserApp userApp;
 	
+	
+	
+	public VFSApp getVfsApp()
+	{
+		return vfsApp;
+	}
+
+	public void setVfsApp( VFSApp vfsApp )
+	{
+		this.vfsApp = vfsApp;
+	}
+
 	public WebCacheApp getWebCacheApp()
 	{
 		return webCacheApp;

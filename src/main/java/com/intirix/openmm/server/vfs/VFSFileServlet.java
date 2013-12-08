@@ -13,7 +13,7 @@ public class VFSFileServlet extends FileServlet
 
 	protected FileSystemBrowser getFileSystemBrowser() throws OpenMMMidtierException
 	{
-		final FileSystemBrowser browser = getRuntime().getVFSBrowser();
+		final FileSystemBrowser browser = getRuntime().getApplicationLayer().getVfsApp().getBrowser();
 		return browser;
 	}
 }

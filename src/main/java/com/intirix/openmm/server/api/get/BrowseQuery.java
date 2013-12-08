@@ -10,6 +10,7 @@ import com.intirix.openmm.server.api.BrowseResponse;
 import com.intirix.openmm.server.api.GetQuery;
 import com.intirix.openmm.server.api.beans.FileEntry;
 import com.intirix.openmm.server.api.beans.FolderEntry;
+import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
 public class BrowseQuery extends GetQuery
 {
@@ -30,8 +31,10 @@ public class BrowseQuery extends GetQuery
 
 		try
 		{
+			final FileSystemBrowser browser = getRuntime().getApplicationLayer().getVfsApp().getBrowser();
+			
 			final List< FolderEntry > folders = new ArrayList< FolderEntry >();
-			for ( final String folder: getRuntime().getVFSBrowser().listFolders( path ) )
+			for ( final String folder: browser.listFolders( path ) )
 			{
 				final FolderEntry entry = new FolderEntry();
 				entry.setName( folder );
@@ -40,7 +43,7 @@ public class BrowseQuery extends GetQuery
 			resp.setFolders( folders.toArray( new FolderEntry[]{} ) );
 			
 			final List< FileEntry > files = new ArrayList< FileEntry >();
-			for ( final String file: getRuntime().getVFSBrowser().listFiles( path ) )
+			for ( final String file: browser.listFiles( path ) )
 			{
 				final FileEntry entry = new FileEntry();
 				entry.setName( file );

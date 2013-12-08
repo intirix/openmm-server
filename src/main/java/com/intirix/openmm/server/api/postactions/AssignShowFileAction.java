@@ -10,6 +10,7 @@ import com.intirix.openmm.server.api.PostAction;
 import com.intirix.openmm.server.api.PostActionResult;
 import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.mt.app.ShowApp;
+import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
 public class AssignShowFileAction extends PostAction
 {
@@ -28,11 +29,13 @@ public class AssignShowFileAction extends PostAction
 
 		try
 		{
+			final FileSystemBrowser browser = getRuntime().getApplicationLayer().getVfsApp().getBrowser();
+			
 			final ShowApp showApp = getRuntime().getApplicationLayer().getShowApp();
 			final Episode episode = showApp.getEpisode( showId, season, ep );
 
 			final String file = request.getParameter( "path" ) + '/' + request.getParameter( "filename" );
-			final long size = getRuntime().getVFSBrowser().getFileLength( file );
+			final long size = browser.getFileLength( file );
 
 
 			showApp.assignFile( episode.getId(), file, size );

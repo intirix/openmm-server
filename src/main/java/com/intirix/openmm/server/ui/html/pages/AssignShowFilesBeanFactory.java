@@ -13,6 +13,7 @@ import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.ui.html.PageBeanFactory;
 import com.intirix.openmm.server.ui.html.PageData;
+import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
 public class AssignShowFilesBeanFactory implements PageBeanFactory
 {
@@ -79,8 +80,9 @@ public class AssignShowFilesBeanFactory implements PageBeanFactory
 		
 		try
 		{
-			page.setFolders( runtime.getVFSBrowser().listFolders( page.getPath() ) );
-			page.setFiles( runtime.getVFSBrowser().listFiles( page.getPath() ) );
+			final FileSystemBrowser browser = runtime.getApplicationLayer().getVfsApp().getBrowser();
+			page.setFolders( browser.listFolders( page.getPath() ) );
+			page.setFiles( browser.listFiles( page.getPath() ) );
 		}
 		catch ( Exception e )
 		{
