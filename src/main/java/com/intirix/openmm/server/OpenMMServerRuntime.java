@@ -28,6 +28,7 @@ import com.intirix.openmm.server.mt.app.VFSApp;
 import com.intirix.openmm.server.mt.app.VFSAppCache;
 import com.intirix.openmm.server.mt.app.VFSAppImpl;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
+import com.intirix.openmm.server.mt.technical.events.VFSConfigUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.MovieMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
@@ -117,6 +118,7 @@ public class OpenMMServerRuntime
 		final VFSApp vfsApp = new VFSAppImpl();
 		final VFSAppCache vfsAppCache = new VFSAppCache( vfsApp );
 		vfsAppCache.setConfigMidtier( getTechnicalLayer().getConfigMidtier() );
+		MessageBus.getInstance().addListener( VFSConfigUpdatedEvent.class, vfsAppCache );
 		getApplicationLayer().setVfsApp( vfsAppCache );
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
