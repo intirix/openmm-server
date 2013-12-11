@@ -25,6 +25,7 @@ public class MoviesDetailsBeanFactory implements PageBeanFactory
 		{
 			final int movieId = Integer.parseInt( request.getParameter( "movieId") );
 			page.setMovie( runtime.getApplicationLayer().getMovieApp().getMovieById( movieId ) );
+			page.setPrefix( page.getMovie().getName().substring( 0, 1 ) );
 		}
 		catch ( OpenMMMidtierException e )
 		{

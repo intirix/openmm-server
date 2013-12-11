@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xsl:stylesheet version="2.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ext="http://exslt.org/common">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ext="http://exslt.org/common"
+	xmlns:fn="http://www.w3.org/2005/xpath-functions">
 
 
 
@@ -57,7 +58,7 @@
 						<div data-role="controlgroup" data-type="horizontal">
 							<a href="#" data-role="button">Update Movie</a>
 							<a data-role="button">
-								<xsl:attribute name="href">assignMovieFiles.html?movieId=<xsl:apply-templates select="//movie/id/node()" />&amp;path=/</xsl:attribute>
+								<xsl:attribute name="href">assignMovieFiles.html?movieId=<xsl:apply-templates select="//movie/id/node()" />&amp;prefix=<xsl:apply-templates select="//prefix/node()" />&amp;path=/</xsl:attribute>
 								Assign Files
 							</a>
 						</div>

@@ -2,6 +2,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ext="http://exslt.org/common">
 	
+	<xsl:output indent="yes"/>
+	
 	<xsl:template match="SinglePage">
 		<div data-role="page" id="topPage" data-wrapper="true">
 			<div data-role="header">
