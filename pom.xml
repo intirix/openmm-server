@@ -91,20 +91,21 @@
 			<version>1.6</version>
 		</dependency>
 
-		<!--
-		<dependency>
-			<groupId>com.omertron</groupId>
-			<artifactId>themoviedbapi</artifactId>
-			<version>3.8</version>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>com.omertron</groupId> <artifactId>themoviedbapi</artifactId> 
+			<version>3.8</version> </dependency> -->
 
 		<dependency>
 			<groupId>it</groupId>
 			<artifactId>tomatoclient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>net.sf.tjws</groupId>
+			<artifactId>tjws</artifactId>
+			<version>1.105</version>
+		</dependency>
+
 
 
 
@@ -161,12 +162,25 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
-				<executions> <execution> <id>copy-dependencies</id> <phase>package</phase> 
-				<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${staging.dir}</outputDirectory> 
-				<overWriteReleases>false</overWriteReleases> <overWriteSnapshots>false</overWriteSnapshots> 
-				<overWriteIfNewer>true</overWriteIfNewer> </configuration> </execution> </executions> 
-				</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${staging.dir}</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- copy other checked resource into staging area, expected by install.xml -->
 			<plugin>
