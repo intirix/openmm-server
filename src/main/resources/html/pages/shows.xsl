@@ -12,10 +12,10 @@
 					<h1>${ui.shows.menu.heading}</h1>
 					<ListView>
 						<xsl:if test="showsBean/hasTVDBKey = 'true'">
-						<ListViewItem href="/html/showsTvdbSearch.html">${ui.shows.menu.tvdb}
+						<ListViewItem href="/openmm/html/showsTvdbSearch.html">${ui.shows.menu.tvdb}
 						</ListViewItem>
 						</xsl:if>
-						<ListViewItem href="/html/showsList.html">${ui.shows.menu.list}
+						<ListViewItem href="/openmm/html/showsList.html">${ui.shows.menu.list}
 						</ListViewItem>
 					</ListView>
 				</Content>

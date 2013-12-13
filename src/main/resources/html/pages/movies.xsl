@@ -12,10 +12,10 @@
 					<h1>${ui.movies.menu.heading}</h1>
 					<ListView>
 						<xsl:if test="moviesBean/hasRTKey = 'true'">
-						<ListViewItem href="/html/moviesRTSearch.html">${ui.movies.menu.rt}
+						<ListViewItem href="/openmm/html/moviesRTSearch.html">${ui.movies.menu.rt}
 						</ListViewItem>
 						</xsl:if>
-						<ListViewItem href="/html/moviesPrefixList.html">${ui.movies.menu.list}
+						<ListViewItem href="/openmm/html/moviesPrefixList.html">${ui.movies.menu.list}
 						</ListViewItem>
 					</ListView>
 				</Content>

@@ -56,10 +56,13 @@ public class HtmlTemplateEngine
 	{
 		final Class< ? > klass = Class.forName( getPageBeanClassName( uri ) );
 		log.debug( "Creating bean for " + uri + " using " + klass.getName() );
+		final long t1 = System.currentTimeMillis();
 		final PageBeanFactory beanFactory = (PageBeanFactory)klass.newInstance();
 		beanFactory.setRuntime( runtime );
 		final PageData pageBean = beanFactory.createPageBean( req, actionResult );
-		log.debug( "Finished creating bean for " + uri + " using " + klass.getName() );
+		final long t2 = System.currentTimeMillis();
+		final long dt = t2 - t1;
+		log.debug( "Finished creating bean for " + uri + " using " + klass.getName() + " in " + dt + "ms" );
 		return pageBean;
 
 	}
@@ -112,21 +115,34 @@ public class HtmlTemplateEngine
 				}
 				else if ( "html".equals( ext ) )
 				{
+					final long t1 = System.currentTimeMillis();
 					final ByteArrayOutputStream buffer = new ByteArrayOutputStream( 1024 );
 					serializer.write( pageBean, buffer );
+					final long t2 = System.currentTimeMillis();
 
 					byte[] xml = buffer.toByteArray();
 					buffer.reset();
 
 					xsltEngine.transform( htmlFilename, xslIs, new ByteArrayInputStream( xml ), buffer );
+					final long t3 = System.currentTimeMillis();
 
 					xml = buffer.toByteArray();
 					buffer.reset();
 
 					xsltEngine.transform( "taglib.xsl", getClass().getResourceAsStream( "/html/xsl/taglib.xsl" ), new ByteArrayInputStream( xml ), buffer );
+					final long t4 = System.currentTimeMillis();
 
 					final String outputString = new StrSubstitutor( varLookup ).replace( buffer.toString() );
 					out.write( outputString.getBytes() );
+					
+					final long t5 = System.currentTimeMillis();
+					
+					final long dt1 = t2 - t1;
+					final long dt2 = t3 - t2;
+					final long dt3 = t4 - t3;
+					final long dt4 = t5 - t4;
+					log.debug( "Rendered " + uri + ": ser=" + dt1 + "ms, genXml=" + dt2 + "ms, genHtml=" + dt3 + "ms, out=" + dt4 + "ms" );
+
 
 				}
 			}

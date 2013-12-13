@@ -10,11 +10,11 @@
 			<SinglePage>
 				<Content>
 					<ListView>
-						<ListViewItem href="/html/adminFolders.html">${ui.admin.menu.folders}
+						<ListViewItem href="/openmm/html/adminFolders.html">${ui.admin.menu.folders}
 						</ListViewItem>
-						<ListViewItem href="/html/adminUsers.html">${ui.admin.menu.users}
+						<ListViewItem href="/openmm/html/adminUsers.html">${ui.admin.menu.users}
 						</ListViewItem>
-						<ListViewItem href="/html/adminServer.html">${ui.admin.menu.server}
+						<ListViewItem href="/openmm/html/adminServer.html">${ui.admin.menu.server}
 						</ListViewItem>
 					</ListView>
 				</Content>

@@ -13,10 +13,10 @@
 								select="/browseBean/path" /></div>
 					<ListView>
 						<xsl:if test="string-length(/browseBean/parentPath) &gt; 1">
-							<ListViewItem><xsl:attribute name="href">/html/browse.html?path=<xsl:apply-templates select="/browseBean/parentPath" />/</xsl:attribute>Parent Folder</ListViewItem>
+							<ListViewItem><xsl:attribute name="href">/openmm/html/browse.html?path=<xsl:apply-templates select="/browseBean/parentPath" />/</xsl:attribute>Parent Folder</ListViewItem>
 						</xsl:if>
 						<xsl:if test="string-length(/browseBean/parentPath) = 1">
-							<ListViewItem><xsl:attribute name="href">/html/browse.html?path=<xsl:apply-templates select="/browseBean/parentPath" /></xsl:attribute>Parent Folder</ListViewItem>
+							<ListViewItem><xsl:attribute name="href">/openmm/html/browse.html?path=<xsl:apply-templates select="/browseBean/parentPath" /></xsl:attribute>Parent Folder</ListViewItem>
 						</xsl:if>
 						<xsl:if test="//folders[@length>0]">
 							<ListViewDivider>Folders</ListViewDivider>
@@ -34,7 +34,7 @@
 	
 	<xsl:template match="string" mode="folder">
 		<ListViewItem>
-			<xsl:attribute name="href">/html/browse.html?path=<xsl:apply-templates select="/browseBean/path" /><xsl:apply-templates select="node()" />/</xsl:attribute>
+			<xsl:attribute name="href">/openmm/html/browse.html?path=<xsl:apply-templates select="/browseBean/path" /><xsl:apply-templates select="node()" />/</xsl:attribute>
 			<xsl:apply-templates select="node()" />/
 		</ListViewItem>
 	</xsl:template>

@@ -10,14 +10,14 @@
 			<SinglePage>
 				<Content>
 					<ListView>
-						<ListViewItem href="/html/browse.html?path=/"
+						<ListViewItem href="/openmm/html/browse.html?path=/"
 							data-icon="grid">${ui.main.menu.browse}
 						</ListViewItem>
-						<ListViewItem href="/html/shows.html">${ui.main.menu.shows}
+						<ListViewItem href="/openmm/html/shows.html">${ui.main.menu.shows}
 						</ListViewItem>
-						<ListViewItem href="/html/movies.html">${ui.main.menu.movies}
+						<ListViewItem href="/openmm/html/movies.html">${ui.main.menu.movies}
 						</ListViewItem>
-						<ListViewItem href="/html/admin.html" data-icon="gear">${ui.main.menu.admin}
+						<ListViewItem href="/openmm/html/admin.html" data-icon="gear">${ui.main.menu.admin}
 						</ListViewItem>
 					</ListView>
 				</Content>

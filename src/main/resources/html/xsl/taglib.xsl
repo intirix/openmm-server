@@ -10,7 +10,7 @@
 				<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back
 				</a>
 				<h1>${ui.title}</h1>
-				<a href="/html/index.html" data-icon="home" data-transition="slide">Home
+				<a href="/openmm/html/index.html" data-icon="home" data-transition="slide">Home
 				</a>
 			</div>
 			<xsl:apply-templates select="Header"/>
@@ -97,10 +97,11 @@
 				<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 				<meta name="apple-mobile-web-app-capable" content="yes" />
 				<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-				<link rel="stylesheet" href="/static/jquery.mobile-1.1.0.min.css" />
-				<link rel="stylesheet" href="/static/openmm.css" />
-				<script src="/staticlib/jquery/1.8.2/jquery.min.js"></script>
-				<script src="/static/jquery.mobile-1.1.0.multiview.js"></script>
+				<link rel="stylesheet" href="/openmm/staticlib/jquery-mobile/1.3.0/jquery.mobile.min.css" />
+				<link rel="stylesheet" href="/openmm/static/openmm.css" />
+				<script src="/openmm/staticlib/jquery/1.8.2/jquery.min.js"></script>
+				<script src="/openmm/staticlib/jquery-mobile/1.3.0/jquery.mobile.min.js"></script>
+				<!-- <script src="/openmm/static/jquery.mobile-1.1.0.multiview.js"></script>-->
 				<script src="/static/openmm.js"></script>
 				<script type="text/javascript">
 					$(document).bind("mobileinit", function(){

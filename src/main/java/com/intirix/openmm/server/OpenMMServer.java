@@ -105,35 +105,35 @@ public class OpenMMServer
 		
 		
 		final HtmlTemplateEngineServlet htmlServlet = new HtmlTemplateEngineServlet( runtime );
-		mapServlet( "/html", htmlServlet );
-		mapServlet( "/html/*", htmlServlet );
+		mapServlet( "/openmm/html", htmlServlet );
+		mapServlet( "/openmm/html/*", htmlServlet );
 
 		final Servlet webjarsServlet = new StaticResourceServlet( "/META-INF/resources/webjars" );
-		mapServlet( "/staticlib", webjarsServlet );
-		mapServlet( "/staticlib/*", webjarsServlet );
+		mapServlet( "/openmm/staticlib", webjarsServlet );
+		mapServlet( "/openmm/staticlib/*", webjarsServlet );
 
 		final Servlet staticServlet = new StaticResourceServlet( "/web" );
-		mapServlet( "/static", staticServlet );
-		mapServlet( "/static/*", staticServlet );
+		mapServlet( "/openmm/static", staticServlet );
+		mapServlet( "/openmm/static/*", staticServlet );
 		
 		final FileServlet fileServlet = new VFSFileServlet();
 		fileServlet.setRuntime( runtime );
-		mapServlet( "/download", fileServlet );
-		mapServlet( "/download/*", fileServlet );
+		mapServlet( "/openmm/download", fileServlet );
+		mapServlet( "/openmm/download/*", fileServlet );
 		
 		final UpdateServlet updateServlet = new UpdateServlet();
 		updateServlet.setEngine( runtime.getActionEngine() );
-		mapServlet( "/api/update", updateServlet );
+		mapServlet( "/openmm/api/update", updateServlet );
 		
 		final QueryServlet queryServlet = new QueryServlet();
 		queryServlet.setRuntime( runtime );
-		mapServlet( "/api/get", queryServlet );
-		mapServlet( "/api/get/*", queryServlet );
+		mapServlet( "/openmm/api/get", queryServlet );
+		mapServlet( "/openmm/api/get/*", queryServlet );
 
 		final FileServlet webCacheServlet = new WebCacheFileServlet();
 		webCacheServlet.setRuntime( runtime );
-		mapServlet( "/cache", webCacheServlet );
-		mapServlet( "/cache/*", webCacheServlet );
+		mapServlet( "/openmm/cache", webCacheServlet );
+		mapServlet( "/openmm/cache/*", webCacheServlet );
 
 
 		server.addServlet( "/favicon.ico", new SingleStaticFileServlet( "/ic_launcher-web.ico" ) );
