@@ -2,6 +2,8 @@ package com.intirix.openmm.server.mt.technical.beans;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import com.intirix.openmm.server.api.beans.Movie;
 import com.intirix.openmm.server.mt.technical.sql.SQLHelper.ObjectFactory;
@@ -27,6 +29,20 @@ public class MovieObjectFactory implements ObjectFactory< Movie >
 		movie.setRuntime( rs.getString( "RUNTIME" ) );
 		movie.setYear( rs.getString( "YEAR" ) );
 		
+		final Timestamp ts = rs.getTimestamp( "LAST_WATCHED" );
+		if ( ts != null )
+		{
+			final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy/MM/dd" );
+			try
+			{
+				movie.setLastWatched( sdf.format( ts ) );
+			}
+			catch ( Exception e )
+			{
+				// ignore
+			}
+		}
+
 		return movie;
 	}
 

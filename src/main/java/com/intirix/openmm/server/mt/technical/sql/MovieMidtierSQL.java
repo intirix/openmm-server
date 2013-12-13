@@ -1,10 +1,14 @@
 package com.intirix.openmm.server.mt.technical.sql;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.intirix.openmm.server.api.beans.Episode;
 import com.intirix.openmm.server.api.beans.MediaLink;
 import com.intirix.openmm.server.api.beans.Movie;
 import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
@@ -29,9 +33,10 @@ public class MovieMidtierSQL implements MovieMidtier
 	{
 		try
 		{
+			final Object lastWatched = calcLastWatched( movie );
 			sqlHelper.executeUpdate( "movie_add.sql", movie.getName(), movie.getDisplayName(), movie.getDescription(), movie.getGenre(),
 					movie.getImdbId(), movie.getRtId(), movie.getMpaaRating(), movie.getRating(), movie.getRuntime(), movie.getReleaseDate(), 
-					movie.getYear(), movie.getPosterUrl() );
+					movie.getYear(), movie.getPosterUrl(), lastWatched );
 			return sqlHelper.executeQuerySingleRow( new IntegerObjectFactory(), "movie_find.sql", movie.getName(), movie.getYear() );
 		}
 		catch ( Exception e )
@@ -56,9 +61,10 @@ public class MovieMidtierSQL implements MovieMidtier
 	{
 		try
 		{
+			final Object lastWatched = calcLastWatched( movie );
 			sqlHelper.executeUpdate( "movie_update.sql", movie.getName(), movie.getDisplayName(), movie.getDescription(), movie.getGenre(),
 					movie.getImdbId(), movie.getRtId(), movie.getMpaaRating(), movie.getRating(), movie.getRuntime(), movie.getReleaseDate(), 
-					movie.getYear(), movie.getPosterUrl(), oldBean.getId() );
+					movie.getYear(), movie.getPosterUrl(), lastWatched, oldBean.getId() );
 		}
 		catch ( Exception e )
 		{
@@ -140,6 +146,19 @@ public class MovieMidtierSQL implements MovieMidtier
 		}
 	}
 
+
+	private Object calcLastWatched( Movie movie ) throws ParseException
+	{
+		Object lastWatched = SQLNull.TimestampNull;
+		if ( movie.getLastWatched() != null && movie.getLastWatched().length() > 0 )
+		{
+			final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy/MM/dd" );
+			final Date date = sdf.parse( movie.getLastWatched() );
+			final Timestamp ts = new Timestamp( date.getTime() );
+			lastWatched = ts;
+		}
+		return lastWatched;
+	}
 
 
 }
