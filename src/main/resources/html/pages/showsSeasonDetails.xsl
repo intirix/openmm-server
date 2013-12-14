@@ -10,7 +10,7 @@
 			<SinglePage>
 				<Content>
 					<img style="max-width:100%; min-width:100%;">
-						<xsl:attribute name="src"><xsl:apply-templates select="/showsSeasonDetailsBean/bannerPath/node()"/></xsl:attribute>
+						<xsl:attribute name="src">/openmm<xsl:apply-templates select="/showsSeasonDetailsBean/bannerPath/node()"/></xsl:attribute>
 					</img>
 					<h1 style="text-align: center;"><xsl:apply-templates select="/showsSeasonDetailsBean/season/name/node()"/></h1>
 
@@ -21,7 +21,7 @@
 							<ListViewItem>
 								<xsl:attribute name="href">showsEpisodeDetails.html?epid=<xsl:apply-templates select="id/node()"/></xsl:attribute>
 								<img>
-									<xsl:attribute name="src"><xsl:apply-templates select="screenshotPath/node()"/></xsl:attribute>
+									<xsl:attribute name="src">/openmm<xsl:apply-templates select="screenshotPath/node()"/></xsl:attribute>
 								</img>
 								<h1><xsl:apply-templates select="epNum/node()"/>) <xsl:apply-templates select="name/node()"/></h1>
 								<p><xsl:apply-templates select="description/node()"/></p>

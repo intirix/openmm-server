@@ -42,7 +42,7 @@ public class WebCacheAppImpl implements WebCacheApp
 		final String ext = url.replaceFirst( ".*\\.", "" );
 		try
 		{
-			return "/openmm/cache/" + getWebCacheMidtier().registerCachableUrl( url ) + '.' + ext;
+			return "/cache/" + getWebCacheMidtier().registerCachableUrl( url ) + '.' + ext;
 		}
 		catch ( OpenMMMidtierException e )
 		{

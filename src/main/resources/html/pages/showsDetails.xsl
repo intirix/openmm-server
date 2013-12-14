@@ -10,7 +10,7 @@
 			<SinglePage>
 				<Content>
 					<img style="max-width:100%; min-width:100%;">
-						<xsl:attribute name="src"><xsl:apply-templates select="/showsDetailsBean/show/bannerPath/node()"/></xsl:attribute>
+						<xsl:attribute name="src">/openmm<xsl:apply-templates select="/showsDetailsBean/show/bannerPath/node()"/></xsl:attribute>
 					</img>
 					<h1 style="text-align: center;"><xsl:apply-templates select="/showsDetailsBean/show/displayName/node()"/></h1>
 					<p><b><xsl:apply-templates select="/showsDetailsBean/show/contentRating/node()"/></b></p>

@@ -10,7 +10,7 @@
 			<SinglePage>
 				<Content>
 					<img style="max-width:100%; min-width:100%;">
-						<xsl:attribute name="src"><xsl:apply-templates select="/showsTvdbSeasonDetailsBean/banner/node()"/></xsl:attribute>
+						<xsl:attribute name="src">/openmm<xsl:apply-templates select="/showsTvdbSeasonDetailsBean/banner/node()"/></xsl:attribute>
 					</img>
 					<h1 style="text-align: center;"><xsl:apply-templates select="/showsTvdbSeasonDetailsBean/name/node()"/></h1>
 
@@ -21,7 +21,7 @@
 							<ListViewItem>
 								<xsl:attribute name="href">showsTvdbEpisodeDetails.html?epid=<xsl:apply-templates select="id/node()"/></xsl:attribute>
 								<img>
-									<xsl:attribute name="src"><xsl:apply-templates select="banner/node()"/></xsl:attribute>
+									<xsl:attribute name="src">/openmm<xsl:apply-templates select="banner/node()"/></xsl:attribute>
 								</img>
 								<h1><xsl:apply-templates select="episodeNumber/node()"/>) <xsl:apply-templates select="name/node()"/></h1>
 								<p><xsl:apply-templates select="description/node()"/></p>

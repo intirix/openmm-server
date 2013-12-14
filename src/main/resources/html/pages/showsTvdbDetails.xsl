@@ -10,7 +10,7 @@
 			<SinglePage>
 				<Content>
 					<img style="max-width:100%; min-width:100%;">
-						<xsl:attribute name="src"><xsl:apply-templates select="/showsTvdbDetailsBean/banner/node()"/></xsl:attribute>
+						<xsl:attribute name="src">/openmm<xsl:apply-templates select="/showsTvdbDetailsBean/banner/node()"/></xsl:attribute>
 					</img>
 					<h1 style="text-align: center;"><xsl:apply-templates select="/showsTvdbDetailsBean/name/node()"/></h1>
 					<p><xsl:apply-templates select="/showsTvdbDetailsBean/description/node()"/></p>

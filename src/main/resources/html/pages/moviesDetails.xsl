@@ -28,7 +28,7 @@
 				<Content>
 					<div id="blockA">
 						<img style="max-width:100%; min-width:100%;">
-							<xsl:attribute name="src"><xsl:apply-templates
+							<xsl:attribute name="src">/openmm<xsl:apply-templates
 								select="//movie/posterUrl/node()" /></xsl:attribute>
 						</img>
 					</div>
