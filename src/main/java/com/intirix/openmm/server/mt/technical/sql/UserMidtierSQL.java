@@ -76,4 +76,18 @@ public class UserMidtierSQL implements UserMidtier
 		}
 	}
 
+
+	public void setCurrentUser( UserBean bean ) throws OpenMMMidtierException
+	{
+		throw new OpenMMMidtierException( "Unsupported method" );
+	}
+
+
+	public UserBean getCurrentUserBean() throws OpenMMMidtierException
+	{
+		throw new OpenMMMidtierException( "Unsupported method" );
+	}
+	
+	
+
 }

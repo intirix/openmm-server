@@ -42,4 +42,19 @@ public interface UserMidtier
 	 * @throws OpenMMMidtierException
 	 */
 	public void deleteUser( int userId ) throws OpenMMMidtierException;
+		
+	/**
+	 * Set the current user for the thread
+	 * @param username
+	 * @throws OpenMMMidtierException
+	 */
+	public void setCurrentUser( UserBean bean ) throws OpenMMMidtierException;
+	
+	/**
+	 * Get the current user bean
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public UserBean getCurrentUserBean() throws OpenMMMidtierException;
+
 }

@@ -36,6 +36,8 @@ import com.intirix.openmm.server.mt.technical.ShowMidtier;
 import com.intirix.openmm.server.mt.technical.UserMidtier;
 import com.intirix.openmm.server.mt.technical.WebCacheMidtier;
 import com.intirix.openmm.server.mt.technical.events.VFSConfigUpdatedEvent;
+import com.intirix.openmm.server.mt.technical.impl.UserMidtierAccess;
+import com.intirix.openmm.server.mt.technical.impl.UserMidtierValidation;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.MovieMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
@@ -120,7 +122,11 @@ public class OpenMMServerRuntime
 		getTechnicalLayer().setConfigMidtier( TimingProxy.create( ConfigMidtier.class, new ConfigMidtierCache( TimingProxy.create( ConfigMidtier.class, new ConfigMidtierSQL( getDataSource() ) ) ) ) );
 		getTechnicalLayer().setWebCacheMidtier( TimingProxy.create( WebCacheMidtier.class, new WebCacheMidtierCache( TimingProxy.create( WebCacheMidtier.class, new WebCacheMidtierSQL( getDataSource() ) ) ) ) );
 		getTechnicalLayer().setShowMidtier( TimingProxy.create( ShowMidtier.class, new ShowMidtierSQL( getDataSource() ) ) );
-		getTechnicalLayer().setUserMidtier( TimingProxy.create( UserMidtier.class, new UserMidtierCache( TimingProxy.create( UserMidtier.class, new UserMidtierSQL( getDataSource() ) ) ) ) );
+		getTechnicalLayer().setUserMidtier(
+			TimingProxy.create(	UserMidtier.class, new UserMidtierAccess(
+							TimingProxy.create(	UserMidtier.class, new UserMidtierValidation(
+											TimingProxy.create( UserMidtier.class, new UserMidtierCache(
+															TimingProxy.create( UserMidtier.class, new UserMidtierSQL( getDataSource() ) ) ) ) ) ) ) ) );
 		getTechnicalLayer().setMovieMidtier( TimingProxy.create( MovieMidtier.class, new MovieMidtierCache( TimingProxy.create( MovieMidtier.class, new MovieMidtierSQL( getDataSource() ) ) ) ) );
 		
 		final VFSApp vfsApp = new VFSAppImpl();
@@ -169,7 +175,7 @@ public class OpenMMServerRuntime
 		
 		wireMessageBus();
 	}
-
+	
 	/**
 	 * Wire up the message bus to allow various components to talk to each other
 	 */

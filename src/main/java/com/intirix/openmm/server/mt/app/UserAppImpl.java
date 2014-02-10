@@ -132,7 +132,7 @@ public class UserAppImpl implements UserApp
 			// could not find user
 			return false;
 		}
-
+		
 		String pipeline = user.getPasswordPipeline();
 		String encodedPassword = user.getEncodedPassword();
 		String salt = user.getSalt();
@@ -169,7 +169,9 @@ public class UserAppImpl implements UserApp
 
 	public void setCurrentUser( String username ) throws OpenMMMidtierException
 	{
-		tlCurrentUser.set( getUserByUserName( username ) );
+		final UserBean bean = getUserByUserName( username );
+		tlCurrentUser.set( bean );
+		userMidtier.setCurrentUser( bean );
 	}
 
 	public UserBean getCurrentUserBean() throws OpenMMMidtierException

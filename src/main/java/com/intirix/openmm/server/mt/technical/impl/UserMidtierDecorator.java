@@ -36,4 +36,16 @@ public class UserMidtierDecorator implements UserMidtier
 		child.deleteUser( userId );
 	}
 
+	public void setCurrentUser( UserBean bean ) throws OpenMMMidtierException
+	{
+		child.setCurrentUser( bean );
+	}
+
+	public UserBean getCurrentUserBean() throws OpenMMMidtierException
+	{
+		return child.getCurrentUserBean();
+	}
+	
+	
+
 }
