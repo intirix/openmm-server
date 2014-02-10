@@ -4,36 +4,32 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 public class MockHttpServletRequest implements HttpServletRequest
 {
 	
 	private final Map< String, String > params = new HashMap< String, String >( 16 );
 
+	/*
 	public AsyncContext getAsyncContext()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	public Object getAttribute( String arg0 )
 	{
@@ -65,11 +61,13 @@ public class MockHttpServletRequest implements HttpServletRequest
 		return null;
 	}
 
+	/*
 	public DispatcherType getDispatcherType()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	public ServletInputStream getInputStream() throws IOException
 	{
@@ -237,6 +235,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 
 	}
 
+	/*
 	public AsyncContext startAsync() throws IllegalStateException
 	{
 		// TODO Auto-generated method stub
@@ -248,6 +247,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	public boolean authenticate( HttpServletResponse arg0 ) throws IOException, ServletException
 	{
@@ -308,6 +308,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 		return "GET";
 	}
 
+	/*
 	public Part getPart( String arg0 ) throws IOException, ServletException
 	{
 		// TODO Auto-generated method stub
@@ -319,6 +320,7 @@ public class MockHttpServletRequest implements HttpServletRequest
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	public String getPathInfo()
 	{

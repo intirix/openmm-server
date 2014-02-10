@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.googlecode.flyway.core.Flyway;
 import com.intirix.openmm.server.api.PostActionEngine;
 import com.intirix.openmm.server.events.MessageBus;
+import com.intirix.openmm.server.mt.TimingProxy;
 import com.intirix.openmm.server.mt.app.MovieApp;
 import com.intirix.openmm.server.mt.app.MovieAppImpl;
 import com.intirix.openmm.server.mt.app.RTApp;
@@ -27,11 +28,18 @@ import com.intirix.openmm.server.mt.app.UserAppImpl;
 import com.intirix.openmm.server.mt.app.VFSApp;
 import com.intirix.openmm.server.mt.app.VFSAppCache;
 import com.intirix.openmm.server.mt.app.VFSAppImpl;
+import com.intirix.openmm.server.mt.app.WebCacheApp;
 import com.intirix.openmm.server.mt.app.WebCacheAppImpl;
+import com.intirix.openmm.server.mt.technical.ConfigMidtier;
+import com.intirix.openmm.server.mt.technical.MovieMidtier;
+import com.intirix.openmm.server.mt.technical.ShowMidtier;
+import com.intirix.openmm.server.mt.technical.UserMidtier;
+import com.intirix.openmm.server.mt.technical.WebCacheMidtier;
 import com.intirix.openmm.server.mt.technical.events.VFSConfigUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.impl.cache.ConfigMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.MovieMidtierCache;
 import com.intirix.openmm.server.mt.technical.impl.cache.UserMidtierCache;
+import com.intirix.openmm.server.mt.technical.impl.cache.WebCacheMidtierCache;
 import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEvent;
 import com.intirix.openmm.server.mt.technical.rottentomatoes.RottenTomatoesApiKeyUpdatedEventListener;
 import com.intirix.openmm.server.mt.technical.sql.ConfigMidtierSQL;
@@ -109,11 +117,11 @@ public class OpenMMServerRuntime
 
 		actionEngine.setRuntime( this );
 
-		getTechnicalLayer().setConfigMidtier( new ConfigMidtierCache( new ConfigMidtierSQL( getDataSource() ) ) );
-		getTechnicalLayer().setWebCacheMidtier( new WebCacheMidtierSQL( getDataSource() ) );
-		getTechnicalLayer().setShowMidtier( new ShowMidtierSQL( getDataSource() ) );
-		getTechnicalLayer().setUserMidtier( new UserMidtierCache( new UserMidtierSQL( getDataSource() ) ) );
-		getTechnicalLayer().setMovieMidtier( new MovieMidtierCache( new MovieMidtierSQL( getDataSource() ) ) );
+		getTechnicalLayer().setConfigMidtier( TimingProxy.create( ConfigMidtier.class, new ConfigMidtierCache( TimingProxy.create( ConfigMidtier.class, new ConfigMidtierSQL( getDataSource() ) ) ) ) );
+		getTechnicalLayer().setWebCacheMidtier( TimingProxy.create( WebCacheMidtier.class, new WebCacheMidtierCache( TimingProxy.create( WebCacheMidtier.class, new WebCacheMidtierSQL( getDataSource() ) ) ) ) );
+		getTechnicalLayer().setShowMidtier( TimingProxy.create( ShowMidtier.class, new ShowMidtierSQL( getDataSource() ) ) );
+		getTechnicalLayer().setUserMidtier( TimingProxy.create( UserMidtier.class, new UserMidtierCache( TimingProxy.create( UserMidtier.class, new UserMidtierSQL( getDataSource() ) ) ) ) );
+		getTechnicalLayer().setMovieMidtier( TimingProxy.create( MovieMidtier.class, new MovieMidtierCache( TimingProxy.create( MovieMidtier.class, new MovieMidtierSQL( getDataSource() ) ) ) ) );
 		
 		final VFSApp vfsApp = new VFSAppImpl();
 		final VFSAppCache vfsAppCache = new VFSAppCache( vfsApp );
@@ -123,27 +131,27 @@ public class OpenMMServerRuntime
 
 		final WebCacheAppImpl webCacheApp = new WebCacheAppImpl();
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
-		getApplicationLayer().setWebCacheApp( webCacheApp );
+		getApplicationLayer().setWebCacheApp( TimingProxy.create( WebCacheApp.class, webCacheApp ) );
 
 		final TVDBApp tvdbApp = new TVDBAppImpl();
 		tvdbApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
 		tvdbApp.setTVDBMidtier( getTechnicalLayer().getTvdbMidtier() );
-		getApplicationLayer().setTvdbApp( tvdbApp );
+		getApplicationLayer().setTvdbApp( TimingProxy.create( TVDBApp.class, tvdbApp ) );
 		
 		final ShowApp showApp = new ShowAppImpl();
 		showApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
 		showApp.setWebCacheApp( webCacheApp );
-		getApplicationLayer().setShowApp( showApp );
+		getApplicationLayer().setShowApp( TimingProxy.create( ShowApp.class, showApp ) );
 		
 		final MovieApp movieApp = new MovieAppImpl();
 		movieApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
 		movieApp.setWebCacheApp( webCacheApp );
-		getApplicationLayer().setMovieApp( movieApp );
+		getApplicationLayer().setMovieApp( TimingProxy.create( MovieApp.class, movieApp ) );
 		
 		final RTApp rtApp = new RTAppImpl();
 		rtApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
 		rtApp.setRTMidtier( getTechnicalLayer().getRtMidtier() );
-		getApplicationLayer().setRtApp( rtApp );
+		getApplicationLayer().setRtApp( TimingProxy.create( RTApp.class, rtApp ) );
 		
 		if ( config.getTvdbKey().length() > 0 )
 		{
@@ -156,7 +164,7 @@ public class OpenMMServerRuntime
 		
 		final UserApp userApp = new UserAppImpl();
 		userApp.setUserMidtier( getTechnicalLayer().getUserMidtier() );
-		getApplicationLayer().setUserApp( userApp );
+		getApplicationLayer().setUserApp( TimingProxy.create( UserApp.class, userApp ) );
 		
 		
 		wireMessageBus();

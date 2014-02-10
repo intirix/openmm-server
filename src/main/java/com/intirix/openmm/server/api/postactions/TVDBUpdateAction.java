@@ -12,7 +12,7 @@ import com.intirix.openmm.server.api.PostActionResult;
 public class TVDBUpdateAction extends PostAction
 {
 
-	private final Log log = LogFactory.getLog( TestTVDBUpdateAction.class );
+	private final Log log = LogFactory.getLog( TVDBUpdateAction.class );
 
 	@Override
 	public PostActionResult processAction( HttpServletRequest req ) throws ServletException
