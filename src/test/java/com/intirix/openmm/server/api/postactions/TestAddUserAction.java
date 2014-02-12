@@ -36,6 +36,8 @@ public class TestAddUserAction
 		
 		final UserApp userApp = EasyMock.createMock( UserApp.class );
 		EasyMock.expect( userApp.addUser( user ) ).andReturn( 0 );
+		userApp.resetPassword( "myuser", "password" );
+		EasyMock.expectLastCall();
 		EasyMock.replay( userApp );
 		runtime.getApplicationLayer().setUserApp( userApp );
 		
@@ -44,6 +46,7 @@ public class TestAddUserAction
 		req.setParameter( "admin", "Y" );
 		req.setParameter( "displayName", "MyUser" );
 		req.setParameter( "username", "myuser" );
+		req.setParameter( "password", "password" );
 
 		action.processAction( req );
 	}

@@ -18,7 +18,6 @@ import com.intirix.openmm.server.api.beans.Movie;
 import com.intirix.openmm.server.api.beans.MovieDetails;
 import com.intirix.openmm.server.api.beans.MoviePrefixCounts;
 import com.intirix.openmm.server.mt.app.MovieApp;
-import com.intirix.openmm.server.mt.app.VFSApp;
 import com.intirix.openmm.server.ui.html.HtmlTemplateEngine;
 import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
