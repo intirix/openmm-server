@@ -101,11 +101,24 @@ public class UserBean implements Cloneable
 		
 		return bean;
 	}
+	
+	
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		return toString().equals( obj.toString() );
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return getUsername().hashCode();
+	}
 
 	@Override
 	public String toString()
 	{
-		// TODO Auto-generated method stub
 		return "User: " + getUsername();
 	}
 	

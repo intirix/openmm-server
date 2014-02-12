@@ -17,8 +17,10 @@
 						</ListViewItem>
 						<ListViewItem href="/openmm/html/movies.html">${ui.main.menu.movies}
 						</ListViewItem>
-						<ListViewItem href="/openmm/html/admin.html" data-icon="gear">${ui.main.menu.admin}
-						</ListViewItem>
+						<xsl:if test="indexBean/userInfo/admin/node() = 'true'">
+							<ListViewItem href="/openmm/html/admin.html" data-icon="gear">${ui.main.menu.admin}
+							</ListViewItem>
+						</xsl:if>
 					</ListView>
 				</Content>
 			</SinglePage>
