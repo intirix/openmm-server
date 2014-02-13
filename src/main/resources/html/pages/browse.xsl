@@ -41,7 +41,7 @@
 							<ListViewDivider>Files</ListViewDivider>
 							<xsl:for-each select="/browseBean/files/fileEntry">
 								<ListViewItem rel="external">
-									<xsl:attribute name="href">/download<xsl:apply-templates select="/browseBean/path" />/<xsl:apply-templates select="encodedName/node()" /></xsl:attribute>
+									<xsl:attribute name="href">/openmm/download<xsl:apply-templates select="/browseBean/path" />/<xsl:apply-templates select="encodedName/node()" /></xsl:attribute>
 									<xsl:apply-templates select="name/node()" />
 								</ListViewItem>
 							</xsl:for-each>
