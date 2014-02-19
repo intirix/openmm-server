@@ -5,6 +5,7 @@ import com.intirix.openmm.server.mt.technical.ConfigMidtier;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 import com.intirix.openmm.server.vfs.FileSystemBrowser;
 import com.intirix.openmm.server.vfs.FileSystemFactory;
+import com.intirix.openmm.server.vfs.VFileSystem;
 
 /**
  * Default VFS impl
@@ -26,7 +27,11 @@ public class VFSAppImpl implements VFSApp
 		final FileSystemBrowser browser = new FileSystemBrowser();
 		for ( final RootFolder folder: configMidtier.listRootFolders() )
 		{
-			browser.mount( folder.getMountPoint(), new FileSystemFactory().createFileSystem( folder ) );
+			final VFileSystem fs = new FileSystemFactory().createFileSystem( folder );
+			if ( fs != null )
+			{
+				browser.mount( folder.getMountPoint(), fs );
+			}
 		}
 
 		return browser;

@@ -26,6 +26,14 @@ public class RootFolderObjectFactory implements ObjectFactory< RootFolder >
 			ret.setUrl( path );
 			return ret;
 		}
+		else if ( "http".equals( prefix ) )
+		{
+			final HttpRootFolder ret = new HttpRootFolder();
+			ret.setId( rs.getInt( "FOLDER_ID" ) );
+			ret.setMountPoint( rs.getString( "MOUNTPOINT" ) );
+			ret.setUrl( path );
+			return ret;
+		}
 		return null;
 	}
 

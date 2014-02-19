@@ -9,16 +9,29 @@ public class LocalRootFolder extends RootFolder
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public LocalRootFolder()
+	{
+		setType( "LOCAL" );
+	}
 
 	@Override
-	protected void loadConfigFromProperties( Properties props )
+	public void loadConfigFromProperties( Properties props )
 	{
 	}
 
 	@Override
-	protected Properties createPropertiesFromConfig()
+	public Properties createPropertiesFromConfig()
 	{
 		return new Properties();
+	}
+	
+	
+
+	@Override
+	public String getType()
+	{
+		return "LOCAL";
 	}
 
 	@Override
@@ -27,6 +40,7 @@ public class LocalRootFolder extends RootFolder
 		final LocalRootFolder ret = new LocalRootFolder();
 		
 		applyProperties( ret );
+		ret.loadConfigFromProperties( createPropertiesFromConfig() );
 		
 		return ret;
 	}

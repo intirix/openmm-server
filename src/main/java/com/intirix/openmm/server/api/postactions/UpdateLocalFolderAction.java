@@ -10,13 +10,13 @@ import com.intirix.openmm.server.api.PostActionResult;
 import com.intirix.openmm.server.mt.technical.ConfigMidtier;
 import com.intirix.openmm.server.mt.technical.beans.RootFolder;
 
-public class UpdateFolderAction extends PostAction
+public class UpdateLocalFolderAction extends PostAction
 {
 
 	/**
 	 * Logger
 	 */
-	private final Logger log = Logger.getLogger( UpdateFolderAction.class );
+	private final Logger log = Logger.getLogger( UpdateLocalFolderAction.class );
 
 	@Override
 	public PostActionResult processAction( HttpServletRequest req ) throws ServletException
@@ -34,12 +34,12 @@ public class UpdateFolderAction extends PostAction
 			configMidtier.updateRootFolder( oldBean, newBean );
 			
 
-			result.setActionMessage( "Successfully updated folder" );
+			result.setActionMessage( "${ui.actions.updateLocalFolder.success}" );
 		}
 		catch ( Exception e )
 		{
 			result.setActionMessage( e.toString() );
-			log.error( "Failed to update folder", e );
+			log.error( "${ui.actions.updateLocalFolder.failed}", e );
 		}
 		return result;
 

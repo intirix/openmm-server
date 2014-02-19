@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -94,6 +95,64 @@ public class SQLHelper
 		
 
 		return ret;
+	}
+
+	/**
+	 * Execute a query that returns two columns and returns a Properties table of the name-value pairs
+	 * @param path
+	 * @param args
+	 * @return
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public Properties executeQueryLookupTable( String path, Object...args ) throws SQLException, IOException
+	{
+		final long t1 = System.currentTimeMillis();
+		final Properties props = new Properties();
+
+		final String sql = getSql( path );
+		final Connection conn = ds.getConnection();
+		try
+		{
+			final PreparedStatement ps = conn.prepareStatement( sql );
+			try
+			{
+				if ( args != null )
+				{
+					for ( int i = 0; i < args.length; i++ )
+					{
+						ps.setObject( i + 1, args[ i ] );
+					}
+				}
+
+				final ResultSet rs = ps.executeQuery();
+				try
+				{
+					while ( rs.next() )
+					{
+						props.setProperty( rs.getString( 1 ), rs.getString( 2 ) );
+					}
+				}
+				finally
+				{
+					rs.close();
+				}
+			}
+			finally
+			{
+				ps.close();
+			}
+		}
+		finally
+		{
+			conn.close();
+			final long t2 = System.currentTimeMillis();
+			final long dt = t2 - t1;
+			log.debug( "Executed query [" + path + "] in " + dt + "ms" );
+		}
+		
+
+		return props;
 	}
 
 	/**

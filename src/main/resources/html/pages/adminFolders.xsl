@@ -32,10 +32,20 @@
 	</xsl:template>
 
 	<xsl:template match="rootFolder">
-		<ListViewItem href="adminFoldersEdit.html?id=">
-			<xsl:attribute name="href">adminFoldersEdit.html?id=<xsl:value-of select="id/node()"/></xsl:attribute>
-			<xsl:apply-templates select="url/node()"/>
-		</ListViewItem>
+		<xsl:choose>
+			<xsl:when test="type/node() = 'LOCAL'">
+				<ListViewItem href="adminFoldersEdit.html?id=">
+					<xsl:attribute name="href">adminFoldersEditLocal.html?id=<xsl:value-of select="id/node()"/></xsl:attribute>
+					<xsl:apply-templates select="url/node()"/>
+				</ListViewItem>
+			</xsl:when>
+			<xsl:when test="type/node() = 'HTTP'">
+				<ListViewItem href="adminFoldersEdit.html?id=">
+					<xsl:attribute name="href">adminFoldersEditHttp.html?id=<xsl:value-of select="id/node()"/></xsl:attribute>
+					<xsl:apply-templates select="url/node()"/>
+				</ListViewItem>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

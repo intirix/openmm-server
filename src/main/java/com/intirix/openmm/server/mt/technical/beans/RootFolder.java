@@ -19,6 +19,8 @@ public abstract class RootFolder implements Serializable, Cloneable
 	private String mountPoint = "";
 	
 	private String url = "";
+	
+	private String type = "";
 
 	public int getId()
 	{
@@ -51,18 +53,35 @@ public abstract class RootFolder implements Serializable, Cloneable
 	{
 		this.url = url;
 	}
+	
+
+
+
+	/**
+	 * Get the type of the folder
+	 * @return
+	 */
+	public String getType()
+	{
+		return type;
+	}
+
+	public void setType( String type )
+	{
+		this.type = type;
+	}
 
 	/**
 	 * Load properties from the database into the object
 	 * @param props
 	 */
-	protected abstract void loadConfigFromProperties( Properties props );
+	public abstract void loadConfigFromProperties( Properties props );
 	
 	/**
 	 * Get properties so they can be stored into the database
 	 * @return
 	 */
-	protected abstract Properties createPropertiesFromConfig();
+	public abstract Properties createPropertiesFromConfig();
 	
 	protected void applyProperties( RootFolder other )
 	{
@@ -75,6 +94,54 @@ public abstract class RootFolder implements Serializable, Cloneable
 	{
 		return super.clone();
 	}
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		if ( !( obj instanceof RootFolder ) )
+		{
+			return false;
+		}
+		
+		final RootFolder o = (RootFolder)obj;
+		
+		if ( !o.getUrl().equals( getUrl() ) || !o.getMountPoint().equals( getMountPoint() ) )
+		{
+			return false;
+		}
+		
+		final Properties p1 = createPropertiesFromConfig();
+		final Properties p2 = o.createPropertiesFromConfig();
+		
+		for ( final Object k: p1.keySet() )
+		{
+			if ( !p2.containsKey( k ) )
+			{
+				return false;
+			}
+			
+			if ( !p1.get( k ).equals( p2.get( k ) ) )
+			{
+				return false;
+			}
+		}
+		
+		for ( final Object k: p2.keySet() )
+		{
+			if ( !p1.containsKey( k ) )
+			{
+				return false;
+			}
+			
+			if ( !p1.get( k ).equals( p2.get( k ) ) )
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	
 	
 }

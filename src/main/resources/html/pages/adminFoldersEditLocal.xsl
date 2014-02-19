@@ -23,24 +23,24 @@
 					<form method="post" id="editFolderForm">
 						<input type="hidden" name="id">
 							<xsl:attribute name="value"><xsl:apply-templates
-								select="/adminFoldersEditBean/folder/id" /></xsl:attribute>
+								select="//folder/id" /></xsl:attribute>
 						</input>
 						<input type="hidden" id="editFolderAction" name="action"
-							value="UpdateFolder" />
+							value="UpdateLocalFolder" />
 						<label for="editFolderLocalPath">${ui.admin.folders.editFolderLocal.pathLabel}
 						</label>
 						<input type="text" name="path" id="editFolderLocalPath">
 							<xsl:attribute name="value"><xsl:apply-templates
-								select="/adminFoldersEditBean/folder/url" /></xsl:attribute>
+								select="//folder/url" /></xsl:attribute>
 						</input>
 						<label for="editFolderLocalMountPoint">${ui.admin.folders.editFolderLocal.mountPointLabel}
 						</label>
 						<input type="text" name="mountpoint" id="editFolderLocalMountPoint">
 							<xsl:attribute name="value"><xsl:apply-templates
-								select="/adminFoldersEditBean/folder/mountPoint" /></xsl:attribute>
+								select="//folder/mountPoint" /></xsl:attribute>
 						</input>
 						<input type="submit"
-							onclick="document.getElementById( 'editFolderAction' ).value = 'UpdateFolder'; return true;">
+							onclick="document.getElementById( 'editFolderAction' ).value = 'UpdateLocalFolder'; return true;">
 							<xsl:attribute name="value">${ui.admin.folders.editFolderLocal.updateButton}</xsl:attribute>
 						</input>
 						<input type="button"

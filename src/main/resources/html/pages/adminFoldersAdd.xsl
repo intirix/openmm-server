@@ -18,6 +18,8 @@
 					<ListView>
 						<ListViewItem href="adminFoldersAddLocal.html">${ui.folder.types.local}
 						</ListViewItem>
+						<ListViewItem href="adminFoldersAddHttp.html">${ui.folder.types.http}
+						</ListViewItem>
 					</ListView>
 				</Content>
 			</SinglePage>
