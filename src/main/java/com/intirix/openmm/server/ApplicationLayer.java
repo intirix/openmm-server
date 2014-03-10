@@ -2,6 +2,7 @@ package com.intirix.openmm.server;
 
 import com.intirix.openmm.server.mt.app.MovieApp;
 import com.intirix.openmm.server.mt.app.RTApp;
+import com.intirix.openmm.server.mt.app.SearchApp;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.TVDBApp;
 import com.intirix.openmm.server.mt.app.UserApp;
@@ -29,6 +30,7 @@ public class ApplicationLayer
 	
 	private UserApp userApp;
 	
+	private SearchApp searchApp;
 	
 	
 	public VFSApp getVfsApp()
@@ -102,6 +104,16 @@ public class ApplicationLayer
 	public void setUserApp( UserApp userApp )
 	{
 		this.userApp = userApp;
+	}
+
+	public SearchApp getSearchApp()
+	{
+		return searchApp;
+	}
+
+	public void setSearchApp( SearchApp searchApp )
+	{
+		this.searchApp = searchApp;
 	}
 
 	

@@ -54,6 +54,15 @@ public class Configuration
 		
 		return config;
 	}
+	
+	/**
+	 * Get the config folder
+	 * @return
+	 */
+	public static String getConfigFolder()
+	{
+		return System.getProperty( "user.home" ) + "/.openmm-server";
+	}
 
 	private static String getConfigFileName()
 	{

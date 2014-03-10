@@ -14,11 +14,14 @@ import org.apache.log4j.Logger;
 import com.googlecode.flyway.core.Flyway;
 import com.intirix.openmm.server.api.PostActionEngine;
 import com.intirix.openmm.server.events.MessageBus;
+import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.TimingProxy;
 import com.intirix.openmm.server.mt.app.MovieApp;
 import com.intirix.openmm.server.mt.app.MovieAppImpl;
 import com.intirix.openmm.server.mt.app.RTApp;
 import com.intirix.openmm.server.mt.app.RTAppImpl;
+import com.intirix.openmm.server.mt.app.SearchApp;
+import com.intirix.openmm.server.mt.app.SearchAppImpl;
 import com.intirix.openmm.server.mt.app.ShowApp;
 import com.intirix.openmm.server.mt.app.ShowAppImpl;
 import com.intirix.openmm.server.mt.app.TVDBApp;
@@ -159,6 +162,11 @@ public class OpenMMServerRuntime
 		rtApp.setRTMidtier( getTechnicalLayer().getRtMidtier() );
 		getApplicationLayer().setRtApp( TimingProxy.create( RTApp.class, rtApp ) );
 		
+		final SearchApp searchApp = new SearchAppImpl( Configuration.getConfigFolder() + "/searchIndex" );
+		searchApp.setMovieApp( movieApp );
+		searchApp.setShowApp( showApp );
+		getApplicationLayer().setSearchApp( searchApp );
+		
 		if ( config.getTvdbKey().length() > 0 )
 		{
 			getTechnicalLayer().getTvdbMidtier().setTvdbKey( config.getTvdbKey() );
@@ -174,6 +182,16 @@ public class OpenMMServerRuntime
 		
 		
 		wireMessageBus();
+		
+		// reindex on startup
+		try
+		{
+			searchApp.reindex();
+		}
+		catch ( OpenMMMidtierException e )
+		{
+			log.warn( "Failed to reindex", e );
+		}
 	}
 	
 	/**

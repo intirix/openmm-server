@@ -282,4 +282,34 @@ public class NoCloseConnection implements Connection
 		child.setTypeMap( map );
 	}
 
+	public void abort( Executor executor ) throws SQLException
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getNetworkTimeout() throws SQLException
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getSchema() throws SQLException
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setNetworkTimeout( Executor executor, int milliseconds ) throws SQLException
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSchema( String schema ) throws SQLException
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }
