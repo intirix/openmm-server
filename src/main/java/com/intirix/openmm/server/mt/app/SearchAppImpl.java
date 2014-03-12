@@ -11,10 +11,13 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -88,6 +91,8 @@ public class SearchAppImpl implements SearchApp
 			}
 			final Directory dir = FSDirectory.open( indexFile );
 			final IndexWriterConfig config = new IndexWriterConfig( Version.LUCENE_46, analyzer );
+			config.setOpenMode( OpenMode.CREATE_OR_APPEND );
+			
 			final IndexWriter iwriter = new IndexWriter( dir, config );
 
 			for ( final Movie movie: movieApp.listMovies() )
@@ -98,7 +103,8 @@ public class SearchAppImpl implements SearchApp
 				doc.add( new Field( "contents", movie.getName() + " " + movie.getDescription(), TextField.TYPE_STORED ) );
 				doc.add( new Field( "description", movie.getDescription(), TextField.TYPE_STORED ) );
 				doc.add( new Field( "refId", "" + movie.getId(), TextField.TYPE_STORED ) );
-				iwriter.addDocument( doc );
+				doc.add( new StringField( "uid", "movie:" + movie.getId(), Field.Store.YES ) );
+				iwriter.updateDocument( new Term( "uid", "movie:" + movie.getId() ), doc );
 			}
 			
 			for ( final Show show: showApp.listShows() )
@@ -109,7 +115,8 @@ public class SearchAppImpl implements SearchApp
 				doca.add( new Field( "contents", show.getName() + " " + show.getDescription(), TextField.TYPE_STORED ) );
 				doca.add( new Field( "description", show.getDescription(), TextField.TYPE_STORED ) );
 				doca.add( new Field( "refId", "" + show.getId(), TextField.TYPE_STORED ) );
-				iwriter.addDocument( doca );
+				doca.add( new StringField( "uid", "show:" + show.getId(), Field.Store.YES ) );
+				iwriter.updateDocument( new Term( "uid", "show:" + show.getId() ), doca );
 				
 				for ( final Season season: showApp.listSeasons( show.getId() ) )
 				{
@@ -121,7 +128,8 @@ public class SearchAppImpl implements SearchApp
 						doc.add( new Field( "contents", ep.getName() + " " + ep.getDescription() + ' ' + ep.getGuests(), TextField.TYPE_STORED ) );
 						doc.add( new Field( "description", show.getName() + " " + season.getNumber() + 'x' + ep.getEpNum() + " " + ep.getDescription(), TextField.TYPE_STORED ) );
 						doc.add( new Field( "refId", "" + ep.getId(), TextField.TYPE_STORED ) );
-						iwriter.addDocument( doc );
+						doc.add( new StringField( "uid", "epid:" + ep.getId(), Field.Store.YES ) );
+						iwriter.updateDocument( new Term( "uid", "epid:" + ep.getId() ), doc );
 					}
 				}
 				

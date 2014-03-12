@@ -13,6 +13,8 @@
 						<ListViewItem href="/openmm/html/browse.html?path=/"
 							data-icon="grid">${ui.main.menu.browse}
 						</ListViewItem>
+						<ListViewItem href="/openmm/html/search.html">${ui.main.menu.search}
+						</ListViewItem>
 						<ListViewItem href="/openmm/html/shows.html">${ui.main.menu.shows}
 						</ListViewItem>
 						<ListViewItem href="/openmm/html/movies.html">${ui.main.menu.movies}

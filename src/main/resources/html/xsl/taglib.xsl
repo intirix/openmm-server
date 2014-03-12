@@ -81,7 +81,14 @@
 	</xsl:template>
 
 
-		
+	<xsl:template match="FlipSwitch">
+		<input data-role="flipswitch" data-wrapper-class="custom-label-flipswitch" type="checkbox">
+			<xsl:attribute name="name"><xsl:value-of select="@name" /></xsl:attribute>
+			<xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
+			<xsl:attribute name="data-on-text"><xsl:value-of select="@data-on-text" /></xsl:attribute>
+			<xsl:attribute name="data-off-text"><xsl:value-of select="@data-off-text" /></xsl:attribute>
+		</input>
+	</xsl:template>	
 	
 	<!-- default template, matches everything -->
 	<xsl:template match="@*|node()">

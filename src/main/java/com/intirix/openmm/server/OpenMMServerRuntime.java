@@ -187,6 +187,7 @@ public class OpenMMServerRuntime
 		try
 		{
 			searchApp.reindex();
+			searchApp.reindex();
 		}
 		catch ( OpenMMMidtierException e )
 		{
