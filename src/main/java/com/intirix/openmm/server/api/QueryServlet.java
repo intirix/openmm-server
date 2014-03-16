@@ -47,66 +47,66 @@ public class QueryServlet extends HttpServlet
 	{
 		final String uri = req.getRequestURI();
 		final String query = uri.replaceFirst( ".*/api/get/", "" );
-		
+
 		if ( req != null )
 		{
 			req.setAttribute( "query", query );
 		}
-		
+
 		final long t1 = System.currentTimeMillis();
 		try
 		{
-		
-		final String parts[] = query.split( "/" );
-		if ( parts.length >= 2 )
-		{
-			final StringBuilder classNameBuffer = new StringBuilder( 10 );
-			classNameBuffer.append( getClass().getPackage().getName() );
-			classNameBuffer.append( ".get." );
 
-			for ( int i = 0; i < parts.length - 1; i++ )
+			final String parts[] = query.split( "/" );
+			if ( parts.length >= 2 )
 			{
-				final String part = parts[ i ];
-				if ( part.length() > 1 )
+				final StringBuilder classNameBuffer = new StringBuilder( 10 );
+				classNameBuffer.append( getClass().getPackage().getName() );
+				classNameBuffer.append( ".get." );
+
+				for ( int i = 0; i < parts.length - 1; i++ )
 				{
-					classNameBuffer.append( part.substring( 0, 1 ).toUpperCase() );
-					classNameBuffer.append( part.substring( 1 ) );
-				}
-			}
-			classNameBuffer.append( "Query" );
-
-			final String end = parts[ parts.length - 1 ];
-			final String ext = end.replaceFirst( ".*\\.", "" );
-			final String queryId = end.replace( '.' + ext, "" );
-
-			try
-			{
-
-				final Class< ? > klass = Class.forName( classNameBuffer.toString() );
-				if ( GetQuery.class.isAssignableFrom( klass ) )
-				{
-					final GetQuery queryObject = (GetQuery)klass.newInstance();
-					queryObject.setRuntime( runtime );
-					final Object response = queryObject.executeQuery( queryId, req );
-
-					if ( "xml".equals( ext ) )
+					final String part = parts[ i ];
+					if ( part.length() > 1 )
 					{
-						final Serializer serializer = new Persister();
-						serializer.write( response, resp.getOutputStream() );
+						classNameBuffer.append( part.substring( 0, 1 ).toUpperCase() );
+						classNameBuffer.append( part.substring( 1 ) );
+					}
+				}
+				classNameBuffer.append( "Query" );
+
+				final String end = parts[ parts.length - 1 ];
+				final String ext = end.replaceFirst( ".*\\.", "" );
+				final String queryId = end.replace( '.' + ext, "" );
+
+				try
+				{
+
+					final Class< ? > klass = Class.forName( classNameBuffer.toString() );
+					if ( GetQuery.class.isAssignableFrom( klass ) )
+					{
+						final GetQuery queryObject = (GetQuery)klass.newInstance();
+						queryObject.setRuntime( runtime );
+						final Object response = queryObject.executeQuery( queryId, req );
+
+						if ( "xml".equals( ext ) )
+						{
+							final Serializer serializer = new Persister();
+							serializer.write( response, resp.getOutputStream() );
+						}
+
 					}
 
 				}
-
+				catch ( Exception e )
+				{
+					log.warn( "Failed to process query", e );
+				}
 			}
-			catch ( Exception e )
+			else
 			{
-				log.warn( "Failed to process query", e );
+				log.debug( "Query too small: " + uri );
 			}
-		}
-		else
-		{
-			log.debug( "Query too small: " + uri );
-		}
 		}
 		finally
 		{
