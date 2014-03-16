@@ -12,6 +12,8 @@ public class RTAppImpl implements RTApp
 
 	private RTMidtier rtMidtier;
 
+	private SearchApp searchApp;
+	
 	public void setMovieMidtier( MovieMidtier MovieMidtier )
 	{
 		this.movieMidtier = MovieMidtier;
@@ -20,6 +22,11 @@ public class RTAppImpl implements RTApp
 	public void setRTMidtier( RTMidtier rtMidtier )
 	{
 		this.rtMidtier = rtMidtier;
+	}
+
+	public void setSearchApp( SearchApp searchApp )
+	{
+		this.searchApp = searchApp;
 	}
 
 	public int importMovie( String id ) throws OpenMMMidtierException
@@ -65,7 +72,9 @@ public class RTAppImpl implements RTApp
 		}
 		movie.setRtId( id );
 		movie.setYear( rtmovie.year );
-		return movieMidtier.addMovie( movie );
+		final int movieId = movieMidtier.addMovie( movie );
+		searchApp.reindex();
+		return movieId;
 	}
 
 }

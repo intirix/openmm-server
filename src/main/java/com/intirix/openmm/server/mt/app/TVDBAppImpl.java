@@ -19,7 +19,8 @@ import com.omertron.thetvdbapi.model.Series;
 
 public class TVDBAppImpl implements TVDBApp
 {
-
+	private SearchApp searchApp;
+	
 	private ShowMidtier showMidtier;
 
 	private TVDBMidtier tvdbMidtier;
@@ -38,6 +39,13 @@ public class TVDBAppImpl implements TVDBApp
 	public void setTVDBMidtier( TVDBMidtier tvdbMidtier )
 	{
 		this.tvdbMidtier = tvdbMidtier;
+	}
+	
+	
+
+	public void setSearchApp( SearchApp searchApp )
+	{
+		this.searchApp = searchApp;
 	}
 
 	public int importShow( String id ) throws OpenMMMidtierException
@@ -75,6 +83,7 @@ public class TVDBAppImpl implements TVDBApp
 		{
 			addSeason( showId, id, seasonBean );
 		}
+		searchApp.reindex();
 
 		return showId;
 	}
@@ -152,6 +161,7 @@ public class TVDBAppImpl implements TVDBApp
 					addSeason( showId, tvdbId, seasonBean );
 				}
 			}
+			searchApp.reindex();
 		}
 		catch ( CloneNotSupportedException e )
 		{

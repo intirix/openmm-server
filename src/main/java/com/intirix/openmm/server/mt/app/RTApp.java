@@ -25,6 +25,12 @@ public interface RTApp
 	public void setRTMidtier( RTMidtier rtMidtier );
 	
 	/**
+	 * Set the search app
+	 * @param searchApp
+	 */
+	public void setSearchApp( SearchApp searchApp );
+	
+	/**
 	 * Import a movie
 	 * @param id
 	 */

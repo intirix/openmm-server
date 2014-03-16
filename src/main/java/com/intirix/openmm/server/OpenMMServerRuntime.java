@@ -142,30 +142,32 @@ public class OpenMMServerRuntime
 		webCacheApp.setWebCacheMidtier( getTechnicalLayer().getWebCacheMidtier() );
 		getApplicationLayer().setWebCacheApp( TimingProxy.create( WebCacheApp.class, webCacheApp ) );
 
-		final TVDBApp tvdbApp = new TVDBAppImpl();
-		tvdbApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
-		tvdbApp.setTVDBMidtier( getTechnicalLayer().getTvdbMidtier() );
-		getApplicationLayer().setTvdbApp( TimingProxy.create( TVDBApp.class, tvdbApp ) );
-		
+		final MovieApp movieApp = new MovieAppImpl();
+		movieApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
+		movieApp.setWebCacheApp( webCacheApp );
+		getApplicationLayer().setMovieApp( TimingProxy.create( MovieApp.class, movieApp ) );
+				
 		final ShowApp showApp = new ShowAppImpl();
 		showApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
 		showApp.setWebCacheApp( webCacheApp );
 		getApplicationLayer().setShowApp( TimingProxy.create( ShowApp.class, showApp ) );
 		
-		final MovieApp movieApp = new MovieAppImpl();
-		movieApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
-		movieApp.setWebCacheApp( webCacheApp );
-		getApplicationLayer().setMovieApp( TimingProxy.create( MovieApp.class, movieApp ) );
-		
-		final RTApp rtApp = new RTAppImpl();
-		rtApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
-		rtApp.setRTMidtier( getTechnicalLayer().getRtMidtier() );
-		getApplicationLayer().setRtApp( TimingProxy.create( RTApp.class, rtApp ) );
-		
 		final SearchApp searchApp = new SearchAppImpl( Configuration.getConfigFolder() + "/searchIndex" );
 		searchApp.setMovieApp( movieApp );
 		searchApp.setShowApp( showApp );
 		getApplicationLayer().setSearchApp( searchApp );
+		
+		final RTApp rtApp = new RTAppImpl();
+		rtApp.setMovieMidtier( getTechnicalLayer().getMovieMidtier() );
+		rtApp.setRTMidtier( getTechnicalLayer().getRtMidtier() );
+		rtApp.setSearchApp( searchApp );
+		getApplicationLayer().setRtApp( TimingProxy.create( RTApp.class, rtApp ) );
+
+		final TVDBApp tvdbApp = new TVDBAppImpl();
+		tvdbApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
+		tvdbApp.setTVDBMidtier( getTechnicalLayer().getTvdbMidtier() );
+		tvdbApp.setSearchApp( searchApp );
+		getApplicationLayer().setTvdbApp( TimingProxy.create( TVDBApp.class, tvdbApp ) );
 		
 		if ( config.getTvdbKey().length() > 0 )
 		{

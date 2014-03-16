@@ -11,6 +11,12 @@ public interface TVDBApp
 {
 	
 	/**
+	 * Set the search app
+	 * @param searchApp
+	 */
+	public void setSearchApp( SearchApp searchApp );
+	
+	/**
 	 * Set the show midtier
 	 * @param showMidtier
 	 */
