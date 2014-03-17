@@ -30,6 +30,7 @@ public class TestRTAppImpl
 		runtime.init();
 		movieMidtier = new MovieMidtierSQL( runtime.getDataSource() );
 		app.setMovieMidtier( movieMidtier );
+		app.setSearchApp( EasyMock.createMock( SearchApp.class ) );
 	}
 
 	@Test

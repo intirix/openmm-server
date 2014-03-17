@@ -41,6 +41,10 @@
 						<input id="assignShowFileName" type="hidden" name="filename" value=""/>
 					</form>
 				
+					<form id="assignShowDirectoryForm" method="post">
+						<input type="hidden" name="action" value="AssignShowDirectory"/>
+					</form>
+				
 					<h2>Assign Files to a Show Episode</h2>
 					<div class="my-breakpoint">
 						<div class="col1">
@@ -162,17 +166,24 @@
 									</ListViewItem>
 								</xsl:for-each>
 								
-								<!-- only display the files if an episode is selected -->
-								<xsl:if test="/assignShowFilesBean/selected/node() = 'true'">
-									<xsl:if test="//files[@length>0]">
-										<ListViewDivider>Assign File</ListViewDivider>
-										<xsl:for-each select="//files/string">
-											<ListViewItem href="#" onclick="document.getElementById( 'assignShowFileName' ).value = this.textContent;document.getElementById('assignShowFileForm').submit();return false;">
-												<xsl:apply-templates select="node()" />
-											</ListViewItem>
-										</xsl:for-each>
+								<!--  only display the assign all button if the user selected a show -->
+								<xsl:if test="/assignShowFilesBean/showId/node() >= 0">
+									<ListViewDivider>Assign Files</ListViewDivider>
+									<ListViewItem href="#" onclick="document.getElementById('assignShowDirectoryForm').submit();return false;">
+										Assign All Files
+									</ListViewItem>
+									<!-- only display the files if an episode is selected -->
+									<xsl:if test="/assignShowFilesBean/selected/node() = 'true'">
+										<xsl:if test="//files[@length>0]">
+											<xsl:for-each select="//files/string">
+												<ListViewItem href="#" onclick="document.getElementById( 'assignShowFileName' ).value = this.textContent;document.getElementById('assignShowFileForm').submit();return false;">
+													<xsl:apply-templates select="node()" />
+												</ListViewItem>
+											</xsl:for-each>
+										</xsl:if>
 									</xsl:if>
 								</xsl:if>
+								
 							</ListView>
 						
 						</div>

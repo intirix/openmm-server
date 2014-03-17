@@ -150,6 +150,7 @@ public class OpenMMServerRuntime
 		final ShowApp showApp = new ShowAppImpl();
 		showApp.setShowMidtier( getTechnicalLayer().getShowMidtier() );
 		showApp.setWebCacheApp( webCacheApp );
+		showApp.setVFSApp( vfsAppCache );
 		getApplicationLayer().setShowApp( TimingProxy.create( ShowApp.class, showApp ) );
 		
 		final SearchApp searchApp = new SearchAppImpl( Configuration.getConfigFolder() + "/searchIndex" );
@@ -186,15 +187,14 @@ public class OpenMMServerRuntime
 		wireMessageBus();
 		
 		// reindex on startup
-		try
-		{
-			searchApp.reindex();
-			searchApp.reindex();
-		}
-		catch ( OpenMMMidtierException e )
-		{
-			log.warn( "Failed to reindex", e );
-		}
+//		try
+//		{
+//			searchApp.reindex();
+//		}
+//		catch ( OpenMMMidtierException e )
+//		{
+//			log.warn( "Failed to reindex", e );
+//		}
 	}
 	
 	/**

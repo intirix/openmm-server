@@ -28,6 +28,12 @@ public interface ShowApp
 	 * @param webCacheApp
 	 */
 	public void setWebCacheApp( WebCacheApp webCacheApp );
+	
+	/**
+	 * Set the filesystem app
+	 * @param vfsApp
+	 */
+	public void setVFSApp( VFSApp vfsApp );
 
 	/**
 	 * Add a show
@@ -192,4 +198,13 @@ public interface ShowApp
 	 * @throws OpenMMMidtierException
 	 */
 	public void assignFile( int episodeId, String file, long size ) throws OpenMMMidtierException;
+	
+	/**
+	 * Attempt to assign all the files in a directory to an episode of a show
+	 * @param showId
+	 * @param folder
+	 * @return
+	 * @throws OpenMMMidtierException
+	 */
+	public int assignFilesInDirectory( int showId, String folder ) throws OpenMMMidtierException;
 }

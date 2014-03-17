@@ -1,5 +1,6 @@
 package com.intirix.openmm.server.mt.app;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.intirix.openmm.server.mt.OpenMMMidtierException;
 import com.intirix.openmm.server.mt.technical.ShowMidtier;
 import com.intirix.openmm.server.mt.technical.beans.EpisodeLinkCounts;
 import com.intirix.openmm.server.mt.technical.beans.SeasonEpisodeCounts;
+import com.intirix.openmm.server.vfs.FileSystemBrowser;
 
 public class TestShowAppImpl
 {
@@ -28,6 +30,7 @@ public class TestShowAppImpl
 		impl = new ShowAppImpl();
 		impl.setShowMidtier( EasyMock.createMock( ShowMidtier.class ) );
 		impl.setWebCacheApp( EasyMock.createMock( WebCacheApp.class ) );
+		impl.setVFSApp( EasyMock.createMock( VFSApp.class ) );
 	}
 	
 	/**
@@ -325,6 +328,96 @@ public class TestShowAppImpl
 		
 		
 		impl.listEpisodeDetails( SEASON_ID );
+	}
+	
+	@Test
+	public void testAssignFilesInDirectory() throws OpenMMMidtierException, IOException
+	{
+		final int SHOW_ID = 2;
+		final String showFolder = "/shows/myShow";
+		
+		final List< String > files = new ArrayList< String >();
+		files.add( "Show s1e1.avi" );
+		files.add( "Show s01e02.avi" );
+		files.add( "Show 1x1.avi" );
+		files.add( "Show [1x1].avi" );
+		files.add( "Show 01x02.avi" );
+		files.add( "Show 11x02.avi" );
+		
+		final List< Season > seasons = new ArrayList< Season >( 10 );
+		final Season season1 = new Season();
+		season1.setId( 1 );
+		season1.setNumber( 1 );
+		seasons.add( season1 );
+		
+		final Season season11 = new Season();
+		season11.setId( 11 );
+		season11.setNumber( 11 );
+		seasons.add( season11 );
+		
+		final List< Episode > eplist1 = new ArrayList< Episode >();
+		final List< Episode > eplist11 = new ArrayList< Episode >();
+
+		final Episode ep1_1 = new Episode();
+		ep1_1.setId( 1 );
+		ep1_1.setEpNum( 1 );
+		eplist1.add( ep1_1 );
+
+		final Episode ep1_2 = new Episode();
+		ep1_2.setId( 2 );
+		ep1_2.setEpNum( 2 );
+		eplist1.add( ep1_2 );
+		
+		final Episode ep11_2 = new Episode();
+		ep11_2.setId( 112 );
+		ep11_2.setEpNum( 2 );
+		eplist11.add( ep11_2 );
+		
+		final FileSystemBrowser fsb = EasyMock.createMock( FileSystemBrowser.class );
+		EasyMock.expect( fsb.listFiles( showFolder ) ).andReturn( files.toArray( new String[]{} ) );
+		EasyMock.expect( impl.getVFSApp().getBrowser() ).andReturn( fsb );
+		
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 1 ) ).andReturn( eplist1 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 0 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep1_1.getId(), showFolder + '/' + files.get( 0 ), 1L );
+		EasyMock.expectLastCall();
+	
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 1 ) ).andReturn( eplist1 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 1 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep1_2.getId(), showFolder + '/' + files.get( 1 ), 1L );
+		EasyMock.expectLastCall();
+		
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 1 ) ).andReturn( eplist1 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 2 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep1_1.getId(), showFolder + '/' + files.get( 2 ), 1L );
+		EasyMock.expectLastCall();
+		
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 1 ) ).andReturn( eplist1 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 3 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep1_1.getId(), showFolder + '/' + files.get( 3 ), 1L );
+		EasyMock.expectLastCall();
+	
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 1 ) ).andReturn( eplist1 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 4 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep1_2.getId(), showFolder + '/' + files.get( 4 ), 1L );
+		EasyMock.expectLastCall();
+		
+		EasyMock.expect( impl.getShowMidtier().listSeasons( SHOW_ID ) ).andReturn( seasons );
+		EasyMock.expect( impl.getShowMidtier().listEpisodes( 11 ) ).andReturn( eplist11 );
+		EasyMock.expect( fsb.getFileLength( showFolder + '/' + files.get( 5 ) ) ).andReturn( 1L );
+		impl.getShowMidtier().assignFile( ep11_2.getId(), showFolder + '/' + files.get( 5 ), 1L );
+		EasyMock.expectLastCall();
+		
+
+		EasyMock.replay( impl.getShowMidtier(), impl.getVFSApp(), fsb );
+		
+		
+		Assert.assertEquals( 6, impl.assignFilesInDirectory( SHOW_ID, showFolder ) );
 	}
 	
 }

@@ -34,6 +34,8 @@ public class TestTVDBAppImpl
 		runtime.init();
 		showMidtier = new ShowMidtierSQL( runtime.getDataSource() );
 		app.setShowMidtier( showMidtier );
+		app.setSearchApp( EasyMock.createMock( SearchApp.class ) );
+
 	}
 
 
