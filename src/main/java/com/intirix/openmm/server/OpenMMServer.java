@@ -13,8 +13,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
 
-import Acme.Serve.Serve;
-
 import com.intirix.openmm.server.api.QueryServlet;
 import com.intirix.openmm.server.api.UpdateServlet;
 import com.intirix.openmm.server.filter.AuthenticationFilter;
@@ -39,10 +37,11 @@ public class OpenMMServer
 	private final Configuration config;
 	private final OpenMMServerRuntime runtime;
 
-	private final Serve server = new Serve();
+	private ServletEngine engine;
 	
 	private final List< Filter > filters = new ArrayList< Filter >();
 
+	
 	public OpenMMServer() throws IOException
 	{
 		initLogging();
@@ -56,11 +55,74 @@ public class OpenMMServer
 		runtime.setConfig( config );
 
 		runtime.init();
-		initHttpServer();
+		
+		
+//		engine = new TJWSServletEngine();
+		engine = new JettyServletEngine();
+		engine.init( runtime, config.getHttpPort() );
 		initServlets();
+		
 		initPaths();
 
 	}
+	
+	private void addSecureServlet( String uri, Servlet servlet )
+	{
+		engine.addServlet( uri, new FilterServlet( filters, servlet ) );
+	}
+	
+	private void addPublicServlet( String uri, Servlet servlet )
+	{
+		engine.addServlet( uri, servlet );
+	}
+
+	private void initServlets()
+	{
+		final AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+		authenticationFilter.setUserApp( runtime.getApplicationLayer().getUserApp() );
+		
+		filters.add( authenticationFilter );
+		
+		
+		final HtmlTemplateEngineServlet htmlServlet = new HtmlTemplateEngineServlet( runtime );
+		addSecureServlet( "/openmm/html", htmlServlet );
+		addSecureServlet( "/openmm/html/*", htmlServlet );
+
+		final Servlet webjarsServlet = new StaticResourceServlet( "/META-INF/resources/webjars" );
+		addSecureServlet( "/openmm/staticlib", webjarsServlet );
+		addSecureServlet( "/openmm/staticlib/*", webjarsServlet );
+
+		final Servlet staticServlet = new StaticResourceServlet( "/web" );
+		addSecureServlet( "/openmm/static", staticServlet );
+		addSecureServlet( "/openmm/static/*", staticServlet );
+		
+		final FileServlet fileServlet = new VFSFileServlet();
+		fileServlet.setRuntime( runtime );
+		addSecureServlet( "/openmm/download", fileServlet );
+		addSecureServlet( "/openmm/download/*", fileServlet );
+		
+		final UpdateServlet updateServlet = new UpdateServlet();
+		updateServlet.setEngine( runtime.getActionEngine() );
+		addSecureServlet( "/openmm/api/update", updateServlet );
+		
+		final QueryServlet queryServlet = new QueryServlet();
+		queryServlet.setRuntime( runtime );
+		addSecureServlet( "/openmm/api/get", queryServlet );
+		addSecureServlet( "/openmm/api/get/*", queryServlet );
+
+		final FileServlet webCacheServlet = new WebCacheFileServlet();
+		webCacheServlet.setRuntime( runtime );
+		addSecureServlet( "/openmm/cache", webCacheServlet );
+		addSecureServlet( "/openmm/cache/*", webCacheServlet );
+
+
+		addPublicServlet( "/favicon.ico", new SingleStaticFileServlet( "/ic_launcher-web.ico" ) );
+
+		// redirect the root to the website
+		addSecureServlet( "/index.html", new RootRedirectServlet() );
+		addPublicServlet( "/", new RootRedirectServlet() );
+	}
+
 
 	private void initLogging()
 	{
@@ -82,66 +144,6 @@ public class OpenMMServer
 			log.error( "Failed to setup logfile", e );
 		}
 	}
-
-	private void initHttpServer()
-	{
-		java.util.Properties properties = new java.util.Properties();
-		properties.put( "port", config.getHttpPort() );
-		properties.setProperty( Acme.Serve.Serve.ARG_NOHUP, "nohup" );
-		server.arguments = properties;
-	}
-	
-	private void mapServlet( String uri, Servlet servlet )
-	{
-		server.addServlet( uri, new FilterServlet( filters, servlet ) );
-	}
-
-	private void initServlets()
-	{
-		final AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-		authenticationFilter.setUserApp( runtime.getApplicationLayer().getUserApp() );
-		
-		filters.add( authenticationFilter );
-		
-		
-		final HtmlTemplateEngineServlet htmlServlet = new HtmlTemplateEngineServlet( runtime );
-		mapServlet( "/openmm/html", htmlServlet );
-		mapServlet( "/openmm/html/*", htmlServlet );
-
-		final Servlet webjarsServlet = new StaticResourceServlet( "/META-INF/resources/webjars" );
-		mapServlet( "/openmm/staticlib", webjarsServlet );
-		mapServlet( "/openmm/staticlib/*", webjarsServlet );
-
-		final Servlet staticServlet = new StaticResourceServlet( "/web" );
-		mapServlet( "/openmm/static", staticServlet );
-		mapServlet( "/openmm/static/*", staticServlet );
-		
-		final FileServlet fileServlet = new VFSFileServlet();
-		fileServlet.setRuntime( runtime );
-		mapServlet( "/openmm/download", fileServlet );
-		mapServlet( "/openmm/download/*", fileServlet );
-		
-		final UpdateServlet updateServlet = new UpdateServlet();
-		updateServlet.setEngine( runtime.getActionEngine() );
-		mapServlet( "/openmm/api/update", updateServlet );
-		
-		final QueryServlet queryServlet = new QueryServlet();
-		queryServlet.setRuntime( runtime );
-		mapServlet( "/openmm/api/get", queryServlet );
-		mapServlet( "/openmm/api/get/*", queryServlet );
-
-		final FileServlet webCacheServlet = new WebCacheFileServlet();
-		webCacheServlet.setRuntime( runtime );
-		mapServlet( "/openmm/cache", webCacheServlet );
-		mapServlet( "/openmm/cache/*", webCacheServlet );
-
-
-		server.addServlet( "/favicon.ico", new SingleStaticFileServlet( "/ic_launcher-web.ico" ) );
-
-		// redirect the root to the website
-		mapServlet( "/index.html", new RootRedirectServlet() );
-		server.addServlet( "/", new RootRedirectServlet() );
-	}
 	
 	private void initPaths()
 	{
@@ -154,7 +156,7 @@ public class OpenMMServer
 
 	public void start()
 	{
-		server.serve();
+		engine.start();
 	}
 
 
