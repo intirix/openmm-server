@@ -26,4 +26,29 @@ public class TestFileSystemBrowser
 		Assert.assertEquals( "test.txt", fs1.listFiles( "/mnt/tmp/test/folder" )[ 0 ] );
 		
 	}
+	
+	@Test
+	public void testThatCheckingFileLengthOfMissingFileDoesNotCreateDirectory() throws IOException {
+		final FileSystemBrowser fs1 = new FileSystemBrowser();
+		fs1.addFolder( "/root", "folder" );
+		try {
+			fs1.getFileLength( "/root/folder/missing.txt" );
+		} catch (Exception e) {
+			
+		}
+		Assert.assertEquals( 0, fs1.listFolders( "/root/folder" ).length );
+	}
+	
+	@Test
+	public void testThatCheckingFileTimestampOfMissingFileDoesNotCreateDirectory() throws IOException {
+		final FileSystemBrowser fs1 = new FileSystemBrowser();
+		fs1.addFolder( "/root", "folder" );
+		try {
+			fs1.getModifyTimestamp( "/root/folder/missing.txt" );
+		} catch (Exception e) {
+			
+		}
+		Assert.assertEquals( 0, fs1.listFolders( "/root/folder" ).length );
+	}
+
 }

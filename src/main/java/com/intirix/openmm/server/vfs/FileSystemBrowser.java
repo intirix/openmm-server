@@ -1,6 +1,7 @@
 package com.intirix.openmm.server.vfs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -317,8 +318,7 @@ public class FileSystemBrowser implements VFileSystem
 				VNode n = node.getSubFolder( p );
 				if ( n == null )
 				{
-					n = new VNode( p );
-					node.addFolder( n );
+					throw new FileNotFoundException( path );
 				}
 				node = n;
 
@@ -384,8 +384,7 @@ public class FileSystemBrowser implements VFileSystem
 				VNode n = node.getSubFolder( p );
 				if ( n == null )
 				{
-					n = new VNode( p );
-					node.addFolder( n );
+					throw new FileNotFoundException(path);
 				}
 				node = n;
 
